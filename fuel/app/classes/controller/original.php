@@ -49,10 +49,56 @@ class Controller_Original extends Controller
         return View::forge('content',$data);
 	}
 
+
     public function action_yap()
 	{
-		return View::forge('viewtest');
+		return View::forge('login');
 	}
+    public function action_yap2()
+	{
+		return View::forge('signin');
+	}
+
+
+
+
+	public function action_income_form()
+	{
+		if(Input::post()){
+			
+		$val=Validation::forge();
+		$val->add_field('date2','日付','required');
+		$val->add_field('income_name','分類','required');
+		$val->add_field('price2','金額','required');
+		if($val->run()){
+			
+			DB::insert('income')->set(array(
+				'date2'=>Input::post('date2'),
+				'income_name'=>Input::post('income_name'),
+				'price2'=>Input::post('price2')
+
+				))->execute();
+				
+		}else{
+			foreach($val->error()as $key=>$value){
+				echo $value->get_message();
+			}
+exit;
+
+		}
+		}
+
+		
+
+
+
+		return View::forge('viewtest');
+
+	}
+
+
+
+
 
 
 	public function action_kform()
@@ -88,10 +134,27 @@ exit;
 		return View::forge('viewtest');
 
 	}
+	public function action_auth(){
+		if (Input::method() === 'POST') {
+		$user = Model_User::forge();
+		$user->username = Input::post('username');
+		$user->password = Input::post('password');
+		$user->email = Input::post('email');
+		
+		if ($user->save()) {
+			// 登録成功時の処理
+			return View::forge('viewtest');
+		} else {
+			// 登録失敗時の処理
+			echo 'ユーザーの登録に失敗しました。';
+		}
+	} else {
+		// 登録ページの表示
+		return View::forge('signin');
+	}
 
 
-
-
+	}
 
 
 
@@ -107,7 +170,8 @@ exit;
 	 */
 	public function action_hello()
 	{
-		return Response::forge(Presenter::forge('welcome/hello'));
+	
+		return View::forge('signin');
 	}
 
 
@@ -141,39 +205,7 @@ exit;
 
 
 
-	public function action_form()
-	{
-		if(Input::post()){
-			
-		$val=Validation::forge();
-		$val->add_field('name1','姓','required');
-		$val->add_field('name2','名','required');
-		$val->add_field('tel','電話番号','required');
-		if($val->run()){
-			echo '成功';
-			DB::insert('Friends')->set(array(
-				'name1'=>Input::post('name1'),
-				'name2'=>Input::post('name2'),
-				'tel'=>Input::post('tel')
-
-				))->execute();
-				exit();
-		}else{
-			foreach($val->error()as $key=>$value){
-				echo $value->get_message();
-			}
-exit;
-
-		}
-		}
-
-		
-
-
-
-		return View::forge('form');
-
-	}
+	
 	public function action_index(){
 		$data=array();
 		$data['name']='千葉千葉千葉';

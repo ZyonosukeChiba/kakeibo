@@ -5,9 +5,13 @@
     <title>家計簿アプリ</title>
 </head>
 <body>
+
+
+
+
     <h1>家計簿アプリ</h1>
     <p>残高  円</p>
-
+<h2>支出</h2>
     <form method="POST" action="/demo/hello/public/original/kform/">
         日付:<input type="date" name="date"><br>
         分類:<input type="text" name="title" list="payment-select" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off"><br>
@@ -26,19 +30,30 @@
     <p id="aa"></p>
     <input type="submit" value="送信">
     </form>
-<!-- <script>
-    function inputChange(event){
-       aa.innerText=pay.value+'円'
-    }
-    
-     let pay=document.getElementById('price');
-     pay.addEventListener('change',inputChange);
-     let aa=document.getElementById('aa')
-</script> -->
+
+    <h2>収入</h2>
+    <form method="POST" action="/demo/hello/public/original/income_form/">
+        日付:<input type="date" name="date2"><br>
+        収入元:<input type="text" name="income_name" ><br>
+   
+
+
+
+    <label>金額 :<input type="text" id="price2" name="price2">円</label>
+    <p id="aaa"></p>
+    <input type="submit" value="送信">
+    </form>
+
+
+
+
+
+
+
 <?php
-$result= DB::select('*')->from('kaeibo')->execute()->as_array();
-		echo '<pre>';
-		print_r($result);
-?>
+// $result= DB::select('*')->from('kaeibo')->execute()->as_array();
+		// echo '<pre>';
+		// print_r($result);
+?> 
 </body>
 </html>
