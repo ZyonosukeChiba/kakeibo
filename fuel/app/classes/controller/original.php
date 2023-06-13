@@ -28,35 +28,39 @@ class Controller_Original extends Controller
 	 * @return  Response
 	 */
 
+
+	//  if (Input::method() == 'POST') {
+	// 	$email = Input::post('email');
+	// 	$password = Input::post('password');
+
+	// 	$user = Model_User::forge(array());
+
+
+	// 	if ($user->login($email, $password)) {
+	// 		// ログイン成功の処理を実装する
+	// 		echo 'ログイン成功';
+	// 	} else {
+	// 		// ログイン失敗の処理を実装する
+	// 		echo 'ログイン失敗';
+	// 		echo $email;
+			
+	// 	}}
+	// else {
+	// 	return View::forge('login2');
 	
 	 
 
 	 public function action_login()
-	 {
-		 // ログイン処理
-		 $email = Input::post('email', null);
-		 $password = Input::post('password', null);
-		 $result_validate = '';
-		 if ($email !== null && $password !== null) {
-			 $validation = $this->validate_login();
-			 $errors = $validation->error();
-			 if (empty($errors)) {
-				 // ログイン認証を行う
-				 $auth = Auth::instance();
-				 if ($auth->login($email, $password)) {
-					 // ログイン成功
-					 return Response::redirect('auth/logined');
-				 }
-				 $result_validate = "ログインに失敗しました。";
-			 } else {
-				 $result_validate = $validation->show_errors();
-			 }
-		 }
-		 $response = Response::forge(View::forge('viewtest'));
-		//  $response->set_title('ログイン');
-		//  $response->content->set_safe('errmsg', $result_validate);
-		 return $response;
-	 }
+	{
+}
+
+
+
+
+	
+	
+	 
+	 
 
 
 
@@ -70,7 +74,7 @@ class Controller_Original extends Controller
 	}
     public function action_yap2()
 	{
-		return View::forge('signin');
+	var_dump(Auth::login('aaa','a'));
 	}
 
 
@@ -109,11 +113,6 @@ exit;
 
 		}
 		}
-
-		
-
-
-
 		return View::forge('viewtest');
 
 	}
@@ -147,34 +146,34 @@ exit;
 	}
 
 
-	public function action_auth2(){
+// 	public function action_auth2(){
 
 		
 	
 
 
-		if (Input::method() === 'POST') {
-		$user = Model_User::forge();
-		// $user->email = Input::post('email');
-		// $user->password = Input::post('password');
-$email=Input::post('email');
-$password=Input::post('password');
+// 		if (Input::method() === 'POST') {
+// 		$user = Model_User::forge();
+// 		// $user->email = Input::post('email');
+// 		// $user->password = Input::post('password');
+// $email=Input::post('email');
+// $password=Input::post('password');
 
 
-		if (Auth::login($email, $password) ){
-			// 登録成功時の処理
-			return View::forge('viewtest');
-		} else {
-			// 登録失敗時の処理
-			echo 'ログインできません';
-		}
-	} else {
-		// 登録ページの表示
-		return View::forge('signin');
-	}
+// 		if (Auth::login($email, $password) ){
+// 			// 登録成功時の処理
+// 			return View::forge('viewtest');
+// 		} else {
+// 			// 登録失敗時の処理
+// 			echo 'ログインできません';
+// 		}
+// 	} else {
+// 		// 登録ページの表示
+// 		return View::forge('signin');
+// 	}
 
 
-	}
+// 	}
 
 
 
@@ -231,6 +230,40 @@ $password=Input::post('password');
 	}
 
 	
+	public function action_income_form()
+	{
+		if(Input::post()){
+
+		$val=Validation::forge();
+		$val->add_field('date2','日付','required');
+		$val->add_field('income_name','分類','required');
+		$val->add_field('price2','金額','required');
+		if($val->run()){
+			$email=Session::get('email');
+			DB::insert('income')->set(array(
+				'date2'=>Input::post('date2'),
+				'income_name'=>Input::post('income_name'),
+				'price2'=>Input::post('price2'),
+				'email'=>$email
+				))->execute();
+
+		}else{
+			foreach($val->error()as $key=>$value){
+				echo $value->get_message();
+			}
+exit;
+
+		}
+		}
+
+
+
+
+
+		return View::forge('viewtest');
+
+	}
+
 
 	/**
 	 * The 404 action for the application.
