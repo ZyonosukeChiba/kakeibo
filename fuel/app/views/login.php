@@ -16,16 +16,12 @@
     <button id="login">ログイン</button>
 
 
+<?php
 
+$email = Input::post('email'); // フォームからemailの値を取得
 
-
-
-  <script>
-    var signButton =document.getElementById("signin");
-    signButton.addEventListener("click",function(){
-        
-    });
-  </script>
+		\Session::set('email', $email); // セッションにemailを保存
+?>
 
 
 

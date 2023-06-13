@@ -29,30 +29,44 @@ class Controller_Original extends Controller
 	 */
 
 	
+	 
+
+	 public function action_login()
+	 {
+		 // ログイン処理
+		 $email = Input::post('email', null);
+		 $password = Input::post('password', null);
+		 $result_validate = '';
+		 if ($email !== null && $password !== null) {
+			 $validation = $this->validate_login();
+			 $errors = $validation->error();
+			 if (empty($errors)) {
+				 // ログイン認証を行う
+				 $auth = Auth::instance();
+				 if ($auth->login($email, $password)) {
+					 // ログイン成功
+					 return Response::redirect('auth/logined');
+				 }
+				 $result_validate = "ログインに失敗しました。";
+			 } else {
+				 $result_validate = $validation->show_errors();
+			 }
+		 }
+		 $response = Response::forge(View::forge('viewtest'));
+		//  $response->set_title('ログイン');
+		//  $response->content->set_safe('errmsg', $result_validate);
+		 return $response;
+	 }
 
 
 
 
 
-	public function action_viewtest2()
-	{
-    
-        $data=array();
-      $data['members']=[
-        array('name'=>'山田','age'=>24),
-        array('name'=>'人','age'=>99),
-        array('name'=>'犬','age'=>31),
-        array('name'=>'さる','age'=>241),
-        array('name'=>'猫','age'=>2),
-
-      ];
-        return View::forge('content',$data);
-	}
 
 
     public function action_yap()
 	{
-		return View::forge('login');
+		return View::forge('login2');
 	}
     public function action_yap2()
 	{
@@ -62,39 +76,7 @@ class Controller_Original extends Controller
 
 
 
-	public function action_income_form()
-	{
-		if(Input::post()){
-			
-		$val=Validation::forge();
-		$val->add_field('date2','日付','required');
-		$val->add_field('income_name','分類','required');
-		$val->add_field('price2','金額','required');
-		if($val->run()){
-			
-			DB::insert('income')->set(array(
-				'date2'=>Input::post('date2'),
-				'income_name'=>Input::post('income_name'),
-				'price2'=>Input::post('price2')
-
-				))->execute();
-				
-		}else{
-			foreach($val->error()as $key=>$value){
-				echo $value->get_message();
-			}
-exit;
-
-		}
-		}
-
-		
-
-
-
-		return View::forge('viewtest');
-
-	}
+	
 
 
 
@@ -110,12 +92,13 @@ exit;
 		$val->add_field('title','分類','required');
 		$val->add_field('price','金額','required');
 		if($val->run()){
-			
+			$email=Session::get('email');
 			DB::insert('kaeibo')->set(array(
 				'date'=>Input::post('date'),
 				'title'=>Input::post('title'),
-				'price'=>Input::post('price')
-
+				'price'=>Input::post('price'),
+			
+				'email'=>$email
 				))->execute();
 				
 		}else{
@@ -135,6 +118,13 @@ exit;
 
 	}
 	public function action_auth(){
+
+	\Session::instance()->start();
+    $email = Input::post('email'); // フォームからemailの値を取得
+    \Session::set('email', $email); 
+	
+
+
 		if (Input::method() === 'POST') {
 		$user = Model_User::forge();
 		$user->username = Input::post('username');
@@ -157,7 +147,34 @@ exit;
 	}
 
 
+	public function action_auth2(){
 
+		
+	
+
+
+		if (Input::method() === 'POST') {
+		$user = Model_User::forge();
+		// $user->email = Input::post('email');
+		// $user->password = Input::post('password');
+$email=Input::post('email');
+$password=Input::post('password');
+
+
+		if (Auth::login($email, $password) ){
+			// 登録成功時の処理
+			return View::forge('viewtest');
+		} else {
+			// 登録失敗時の処理
+			echo 'ログインできません';
+		}
+	} else {
+		// 登録ページの表示
+		return View::forge('signin');
+	}
+
+
+	}
 
 
 
@@ -171,7 +188,7 @@ exit;
 	public function action_hello()
 	{
 	
-		return View::forge('signin');
+		return View::forge('login');
 	}
 
 

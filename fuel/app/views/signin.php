@@ -16,6 +16,14 @@
         <input type="email" name="email" id="email">
         <br>
         <input type="submit" value="登録">
+
     </form>
+
+    <?php
+    Session::instance()->start();
+    $email = Input::post('email'); // フォームからemailの値を取得
+    Session::set('email', $email); 
+?>
+
 </body>
 </html>

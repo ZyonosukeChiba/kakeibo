@@ -10,6 +10,10 @@
 
 
     <h1>家計簿アプリ</h1>
+    <?php 
+    
+    $email=Session::get('email');
+    echo $email;?>さんがログインしています
     <p>残高  円</p>
 <h2>支出</h2>
     <form method="POST" action="/demo/hello/public/original/kform/">
@@ -50,10 +54,6 @@
 
 
 
-<?php
-// $result= DB::select('*')->from('kaeibo')->execute()->as_array();
-		// echo '<pre>';
-		// print_r($result);
-?> 
+
 </body>
 </html>
