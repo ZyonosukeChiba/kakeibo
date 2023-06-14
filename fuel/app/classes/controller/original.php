@@ -50,8 +50,12 @@ class Controller_Original extends Controller
 	
 	 
 
-	 public function action_login()
-	{
+	 public function action_email()
+	{\Session::instance()->start();
+		$email = Input::post('email'); // フォームからemailの値を取得
+		\Session::set('email', $email); 
+		
+		return View::forge('viewtest');
 }
 
 
@@ -203,6 +207,16 @@ exit;
 		))->execute();
 	}
 
+public function action_month(){
+	\Session::instance()->start();
+	$month = Input::post('month'); // フォームからemailの値を取得
+	\Session::set('month', $month); 
+	
+	return View::forge('viewtest');
+}
+
+
+
 	public function action_out()
 	{
 		$result= DB::select('*')->from('Friends')->execute()->as_array();
@@ -263,6 +277,31 @@ exit;
 		return View::forge('viewtest');
 
 	}
+
+	public function action_delete(){
+		if(Input::post()){
+		$deleteId = $_POST['delete_id'];
+		DB::delete('kaeibo')
+			->where('id', '=', $deleteId)
+			->execute();
+	
+		return View::forge('viewtest');}
+		else{
+			return View::forge('viewtest');}
+	}
+	public function action_delete2(){
+		if(Input::post()){
+		$deleteId2 = $_POST['delete_id2'];
+		DB::delete('income')
+			->where('id', '=', $deleteId2)
+			->execute();
+	
+			return View::forge('viewtest');}
+			else{
+				return View::forge('viewtest');
+			}
+	}
+
 
 
 	/**
