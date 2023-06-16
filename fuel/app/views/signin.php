@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>新規登録</h1>
-    <form action="demo/hello/public/original/auth/" method="post">
+    <form action="demo/hello/public/original/auth3/" method="post">
         <label for="username">ユーザー名:</label>
         <input type="text" name="username" id="username">
         <br>
@@ -20,9 +20,9 @@
     </form>
 
     <?php
-    Session::instance()->start();
-    $email = Input::post('email'); // フォームからemailの値を取得
-    Session::set('email', $email); 
+    // Session::instance()->start();
+    // $email = Input::post('email'); // フォームからemailの値を取得
+    // Session::set('email', $email); 
 ?>
 
 </body>

@@ -8,20 +8,16 @@
     <title>家計簿アプリログイン</title>
 </head>
 <body>
-    <form action="/demo/hello/public/original/yap2/">
+    <form action="/demo/hello/public/original/auth3/">
     <button id="signin" >新規登録</button>
 </form>
 
+<form action="/demo/hello/public/original/form3/">
+<button id="login">ログイン</button>
+</form>
+    
 
-    <button id="login">ログイン</button>
 
-
-<?php
-
-$email = Input::post('email'); // フォームからemailの値を取得
-
-		\Session::set('email', $email); // セッションにemailを保存
-?>
 
 
 

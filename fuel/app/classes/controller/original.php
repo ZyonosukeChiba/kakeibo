@@ -27,67 +27,20 @@ class Controller_Original extends Controller
 	 * @access  public
 	 * @return  Response
 	 */
-
-
-	//  if (Input::method() == 'POST') {
-	// 	$email = Input::post('email');
-	// 	$password = Input::post('password');
-
-	// 	$user = Model_User::forge(array());
-
-
-	// 	if ($user->login($email, $password)) {
-	// 		// ログイン成功の処理を実装する
-	// 		echo 'ログイン成功';
-	// 	} else {
-	// 		// ログイン失敗の処理を実装する
-	// 		echo 'ログイン失敗';
-	// 		echo $email;
-			
-	// 	}}
-	// else {
-	// 	return View::forge('login2');
-	
+//初期画面表示
+public function action_new(){
+	return View::forge('login');
+}
 	 
-
+//emailをセッションに保存
 	 public function action_email()
-	{\Session::instance()->start();
+	{
+		\Session::instance()->start();
 		$email = Input::post('email'); // フォームからemailの値を取得
 		\Session::set('email', $email); 
 		
 		return View::forge('viewtest');
-}
-
-
-
-
-	
-	
-	 
-	 
-
-
-
-
-
-
-
-    public function action_yap()
-	{
-		return View::forge('login2');
-	}
-    public function action_yap2()
-	{
-	var_dump(Auth::login('aaa','a'));
-	}
-
-
-
-
-	
-
-
-
+	}		
 
 
 
@@ -107,77 +60,46 @@ class Controller_Original extends Controller
 				'price'=>Input::post('price'),
 			
 				'email'=>$email
-				))->execute();
-				
-		}else{
+			))->execute();
+				}
+		else{
 			foreach($val->error()as $key=>$value){
 				echo $value->get_message();
-			}
-exit;
-
+			}exit;
 		}
 		}
 		return View::forge('viewtest');
 
 	}
-	public function action_auth(){
 
-	\Session::instance()->start();
-    $email = Input::post('email'); // フォームからemailの値を取得
-    \Session::set('email', $email); 
+	
 	
 
+	public function action_auth3(){
 
-		if (Input::method() === 'POST') {
-		$user = Model_User::forge();
-		$user->username = Input::post('username');
-		$user->password = Input::post('password');
-		$user->email = Input::post('email');
 		
-		if ($user->save()) {
-			// 登録成功時の処理
+
+		if(Input::post()){
+			\Session::instance()->start();
+			$email = Input::post('email'); // フォームからemailの値を取得
+			\Session::set('email', $email); 
+			$username=Input::post('username');;
+			$password=Input::post('password');;
+			$email=Input::post('email');
+			Auth::create_user($username,$password,$email,1);
 			return View::forge('viewtest');
-		} else {
-			// 登録失敗時の処理
-			echo 'ユーザーの登録に失敗しました。';
 		}
-	} else {
-		// 登録ページの表示
-		return View::forge('signin');
-	}
-
-
-	}
-
-
-// 	public function action_auth2(){
-
-		
+		else {
+			// 登録失敗時の処理
+			echo '正しいフォームを入力してください';
+		}
+		{
+			// 登録ページの表示
+			return View::forge('signin');
+		}
 	
+	}
 
-
-// 		if (Input::method() === 'POST') {
-// 		$user = Model_User::forge();
-// 		// $user->email = Input::post('email');
-// 		// $user->password = Input::post('password');
-// $email=Input::post('email');
-// $password=Input::post('password');
-
-
-// 		if (Auth::login($email, $password) ){
-// 			// 登録成功時の処理
-// 			return View::forge('viewtest');
-// 		} else {
-// 			// 登録失敗時の処理
-// 			echo 'ログインできません';
-// 		}
-// 	} else {
-// 		// 登録ページの表示
-// 		return View::forge('signin');
-// 	}
-
-
-// 	}
 
 
 
@@ -195,25 +117,16 @@ exit;
 	}
 
 
-	public function action_insert()
-	{
-		DB::insert('Friends')->set(array(
-			'name1'=>'千葉',
-			'name2'=>'じょう',
-			'tel'=>'01230192',
-			
-
-
-		))->execute();
-	}
-
-public function action_month(){
-	\Session::instance()->start();
-	$month = Input::post('month'); // フォームからemailの値を取得
-	\Session::set('month', $month); 
 	
-	return View::forge('viewtest');
-}
+
+	public function action_month()
+	{
+		\Session::instance()->start();
+		$month = Input::post('month'); // フォームからemailの値を取得
+		\Session::set('month', $month); 
+		
+		return View::forge('viewtest');
+	}
 
 
 
@@ -227,9 +140,31 @@ public function action_month(){
 	public function action_form2()
 	{
 
-		echo Input::post('name1');
-		return View::forge('form');
+	Auth::create_user('aaaa','as','aaaa@gmail.com',1);
 
+	}
+
+	public function action_form3()
+	{\Session::instance()->start();
+		$email = Input::post('email'); // フォームからemailの値を取得
+		\Session::set('email', $email); 
+		if(input::post()){
+        $password=Input::post('password');;
+		$email=Input::post('email');
+	Auth::login($email,$password);
+
+	return View::forge('viewtest');
+	}else{echo 'フォームを入力してください!';}
+
+	return View::forge('login2');
+	}
+
+
+
+	public function action_logout(){
+
+		Auth::logout();
+		return View::forge('login');
 	}
 
 
@@ -240,7 +175,6 @@ public function action_month(){
 		$data=array();
 		$data['name']='千葉千葉千葉';
 		return Response::forge(View::forge('test',$data));
-		
 	}
 
 	
@@ -261,24 +195,21 @@ public function action_month(){
 				'email'=>$email
 				))->execute();
 
-		}else{
+				}else{
 			foreach($val->error()as $key=>$value){
 				echo $value->get_message();
 			}
-exit;
+			exit;
 
-		}
-		}
+			}
+			}
 
-
-
-
-
-		return View::forge('viewtest');
+     return View::forge('viewtest');
 
 	}
 
-	public function action_delete(){
+	public function action_delete()
+	{
 		if(Input::post()){
 		$deleteId = $_POST['delete_id'];
 		DB::delete('kaeibo')
@@ -289,7 +220,8 @@ exit;
 		else{
 			return View::forge('viewtest');}
 	}
-	public function action_delete2(){
+	public function action_delete2()
+	{
 		if(Input::post()){
 		$deleteId2 = $_POST['delete_id2'];
 		DB::delete('income')
@@ -301,6 +233,9 @@ exit;
 				return View::forge('viewtest');
 			}
 	}
+
+
+
 
 
 
