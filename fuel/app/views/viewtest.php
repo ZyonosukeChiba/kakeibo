@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家計簿アプリ</title>
+    
 </head>
 <body>
     
@@ -129,5 +130,6 @@ echo '<h2>収支</h2>';
 $all = $in - $out;
 echo '<p class="total">合計は' . $all . '円です</p>';
 ?>
+
 </body>
 </html>

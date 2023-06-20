@@ -1,1 +1,8 @@
-<footer>千葉丈之亮   作</footer>
+<script>import React from './react';
+
+function MyButton() {
+  return (
+    <button>I'm a button</button>
+  );
+}
+</script>

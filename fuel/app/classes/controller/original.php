@@ -31,6 +31,12 @@ class Controller_Original extends Controller
 public function action_new(){
 	return View::forge('login');
 }
+
+
+
+public function action_js(){
+	return View::forge('footer');
+}
 	 
 //emailをセッションに保存
 	 public function action_email()
