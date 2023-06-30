@@ -2,17 +2,20 @@
 <html>
 <head>
     <title>ログイン</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-    <h1>ログイン</h1>
-    <form action="public/original/form3/" method="POST">
-        <label for="email">メールアドレス:</label>
-        <input type="text" name="email" id="email"  required>
-        <br>
-        <label for="password">パスワード:</label>
-        <input type="password" name="password" id="password" required>
-        <br>
-        <input type="submit" value="ログイン">
-    </form>
+
+    
+ 
+ 
+ <div id="root1"></div>
+<script defer="defer" src="/demo/hello/public/assets/js/src/bundle2.js"> 
+    
+</script> 
+
+<canvas id="rain_and_temperature" width="500" height="500"></canvas>
 </body>
 </html>

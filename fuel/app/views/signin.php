@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>新規登録</h1>
-    <form action="demo/hello/public/original/auth3/" method="post">
+    <form action="demo/hello/public/original/auth4/" method="post">
         <label for="username">ユーザー名:</label>
         <input type="text" name="username" id="username">
         <br>

@@ -31,7 +31,12 @@ class Controller_Original extends Controller
 public function action_new(){
 	return View::forge('login');
 }
-
+public function action_chart(){
+	return View::forge('chart');
+}
+public function action_view(){
+	return View::forge('viewtest');
+}
 
 
 public function action_js(){
@@ -81,26 +86,60 @@ public function action_js(){
 	
 	
 
-	public function action_auth3(){
+	// public function action_auth3(){
+	// 	if(Input::post()){
+	// 		\Session::instance()->start();
+	// 		$email = Input::post('email'); // フォームからemailの値を取得
+	// 		\Session::set('email', $email); 
+	// 		$username=Input::post('username');
+	// 		$password=Input::post('password');
+	// 		Auth::create_user($username,$password,$email,1);
+	// 		return View::forge('viewtest');
+	// 	}
+	// 	else {
+	// 		// 登録失敗時の処理
+	// 		echo '正しいフォームを入力してください';
+	// 		return View::forge('login2');
+	// 	}
+	
+	// }
+	public function action_auth3()
+{
+    if (Input::post()) {
+        \Session::instance()->start();
+        $email = Input::post('email'); // フォームからemailの値を取得
+        \Session::set('email', $email); 
+        $username = Input::post('username');
+        $password = Input::post('password');
+        $created = Auth::create_user($username, $password, $email, 1);
+        
+        if ($created) {
+            return View::forge('viewtest');
+        } else {
+            // 登録失敗時の処理
+            echo 'ユーザーの作成に失敗しました';
+            return View::forge('login2');
+        }
+    } else {
+        // フォームが送信されていない場合の処理
+        echo '正しいフォームを入力してください';
+        return View::forge('login2');
+    }
+}
 
-		
-
+	public function action_auth4(){
 		if(Input::post()){
 			\Session::instance()->start();
 			$email = Input::post('email'); // フォームからemailの値を取得
 			\Session::set('email', $email); 
-			$username=Input::post('username');;
-			$password=Input::post('password');;
-			$email=Input::post('email');
+			$username=Input::post('username');
+			$password=Input::post('password');
 			Auth::create_user($username,$password,$email,1);
 			return View::forge('viewtest');
 		}
 		else {
 			// 登録失敗時の処理
 			echo '正しいフォームを入力してください';
-		}
-		{
-			// 登録ページの表示
 			return View::forge('signin');
 		}
 	
@@ -138,31 +177,31 @@ public function action_js(){
 
 	public function action_out()
 	{
-		$result= DB::select('*')->from('Friends')->execute()->as_array();
-		echo '<pre>';
-		print_r($result);
+		// $result= DB::select('*')->from('Friends')->execute()->as_array();
+		// echo '<pre>';
+		// print_r($result);
+		var_dump(Auth::login('aaa@gmail.com','aaa'));
 	}
 
-	public function action_form2()
-	{
+	
 
-	Auth::create_user('aaaa','as','aaaa@gmail.com',1);
-
-	}
 
 	public function action_form3()
 	{\Session::instance()->start();
-		$email = Input::post('email'); // フォームからemailの値を取得
+		$email = Input::post('email1');// フォームからemailの値を取得
 		\Session::set('email', $email); 
+		 $password=Input::post('password1');
 		if(input::post()){
-        $password=Input::post('password');;
-		$email=Input::post('email');
-	Auth::login($email,$password);
+		if(Auth::login($email,$password)){
+			return View::forge('viewtest');}
+		else{
+			return View::forge('login2');
+		}}
 
-	return View::forge('viewtest');
-	}else{echo 'フォームを入力してください!';}
+	
+	else{echo 'フォームを入力してください';}
 
-	return View::forge('login2');
+	return  View::forge('login2');
 	}
 
 
@@ -170,7 +209,7 @@ public function action_js(){
 	public function action_logout(){
 
 		Auth::logout();
-		return View::forge('login');
+		return View::forge('login2');
 	}
 
 

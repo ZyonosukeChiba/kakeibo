@@ -12,28 +12,34 @@ module.exports={
             exclude: /node_modules/,
             use: {
               loader: 'babel-loader', //バベル適用
+              
+
               options: {
                 presets: [
                   ['@babel/preset-env', { targets: "defaults" }]
                 ]
               }
             }
+
+          },
+          {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
           }
         ]
       },
     output : {
         path: path.resolve(__dirname,"./public/assets/js/src"),
-        filename:'bundle.js',
+        filename:'bundle2.js',
         
 },
     resolve: {
         extensions:[".js",".jsx"],
 
     },
-    devServer:{
-        directory:path.resolve(__dirname,"./public/assets/js/src"),
-        port:3030,
-    }
+  
+  
+
 
 
 };

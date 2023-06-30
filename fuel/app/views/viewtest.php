@@ -2,54 +2,81 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script> 
+    
+     <?php echo Asset::css('styles.css'); ?>
     <title>家計簿アプリ</title>
     
 </head>
 <body>
-    
-    <h1>家計簿アプリ</h1>
-    <form method="POST" action="/demo/hello/public/original/logout/">
-        <input type="hidden" value="1">
-        <input type="submit" value="ログアウト">
-    </form>
+    <div>
+        <h1>家計簿アプリ</h1>
+        <form method="POST" action="/demo/hello/public/original/logout/">
+        <button type="submit">ログアウト</button>
+        </form>
+
+        <form method="POST" action="/demo/hello/public/original/chart/">  
+        <button type="submit">グラフを見る</button>
+        </form>
+    </div>
     <?php 
-$email = Session::get('email');
-if($email != null) {
-    echo $email . 'さんようこそ';
-}
-?>
+            $email = Session::get('email');
+            if($email != null) {
+                echo $email . 'さんようこそ';
+            }
+    ?>
 
-<h2>支出</h2>
-<form method="POST" action="/demo/hello/public/original/kform/">
-    <label for="date">日付:</label>
-    <input type="date" name="date" id="date"><br>
-    <label for="title">分類:</label>
-    <input type="text" name="title" list="payment-select" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off"><br>
-    <datalist id="payment-select">
-        <option value="">please choose an option</option>
-        <option value="food">食費</option>
-        <option value="utility">光熱費</option>
-        <option value="entertainment">交際費</option>
-        <option value="card">クレジットカード</option>
-    </datalist>
-    <label for="price">金額:</label>
-    <input type="text" id="price" name="price">円
-    <p id="aa"></p>
-    <input type="submit" value="送信">
-</form>
+<div class="formContainer">
+    <h2>支出</h2>
+    <form method="POST" action="/demo/hello/public/original/kform/">
+        <div class="uiForm">
+            <div class="formField">
+                <label for="date">日付:</label>
+                <input type="date" name="date" id="date"><br>
+            </div>
+        </div>
+        <div class="formField">
+            <label for="title">分類:</label>
+            <input type="text" name="title" list="payment-select" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off"><br>
+            <datalist id="payment-select">
+                <option value="">please choose an option</option>
+                <option value="食費">食費</option>
+                <option value="光熱費">光熱費</option>
+                <option value="交際費">交際費</option>
+                <option value="クレジットカード">クレジットカード</option>
+            </datalist>
+        </div>
+        <div class="formField">
+            <label for="price">金額:</label>
+            <input type="text" id="price" name="price">円
+        </div>
+        <input type="submit" value="送信">
+    </form>
+</div>
 
-<h2>収入</h2>
-<form method="POST" action="/demo/hello/public/original/income_form/">
-    <label for="date2">日付:</label>
-    <input type="date" name="date2" id="date2"><br>
-    <label for="income_name">収入元:</label>
-    <input type="text" name="income_name"><br>
-    <label for="price2">金額:</label>
-    <input type="text" id="price2" name="price2">円
-    <p id="aaa"></p>
-    <input type="submit" value="送信">
-</form>
+<div class="formContainer">
+    <h2>収入</h2>
+    <form method="POST" action="/demo/hello/public/original/income_form/">
+        <div class="uiForm">
+            <div class="formField">
+                <label for="date2">日付:</label>
+                <input type="date" name="date2" id="date2"><br>
+            </div>
+        </div>
+        <div class="formField">
+            <label for="income_name">収入元:</label>
+            <input type="text" name="income_name"><br>
+        </div>
+        <div class="formField">
+            <label for="price2">金額:</label>
+            <input type="text" id="price2" name="price2">円
+        </div>
+        <input type="submit" value="送信">
+    </form>
+</div>
 
+
+ 
 <p>月ごとの収支を見る</p>
 <form method="POST" action="/demo/hello/public/original/month/">
     <input type="month" name="month" id="month">
