@@ -3,28 +3,43 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script> 
-    
+
      <?php echo Asset::css('styles.css'); ?>
     <title>家計簿アプリ</title>
     
 </head>
 <body>
-    <div>
-        <h1>家計簿アプリ</h1>
-        <form method="POST" action="/demo/hello/public/original/logout/">
-        <button type="submit">ログアウト</button>
-        </form>
 
-        <form method="POST" action="/demo/hello/public/original/chart/">  
-        <button type="submit">グラフを見る</button>
-        </form>
-    </div>
     <?php 
-            $email = Session::get('email');
-            if($email != null) {
-                echo $email . 'さんようこそ';
-            }
-    ?>
+        if(Auth::check()){
+     $email = Session::get('email');
+     if($email != null) {
+         echo $email . 'さんようこそ';
+     }
+    else{'ログインしていません';}}
+     ?>
+    
+        <h1>家計簿アプリ</h1>
+        <div class="button">
+        
+                <form method="POST" action="/demo/hello/public/original/logout/">
+                <button type="submit">ログアウト</button>
+                </form>
+
+                
+                <form method="POST" action="/demo/hello/public/original/chart/">  
+                <button type="submit">グラフを見る</button>
+                </form>
+        
+                <form method="POST" action="/demo/hello/public/original/signout/">
+                <input type="hidden" name="email" value="<?php $email = Session::get('email');
+                echo htmlspecialchars($email); ?>">
+                   <button type="submit">退会する</button>
+                </form>
+
+         </form>
+         </div>
+       
 
 <div class="formContainer">
     <h2>支出</h2>
@@ -47,8 +62,8 @@
             </datalist>
         </div>
         <div class="formField">
-            <label for="price">金額:</label>
-            <input type="text" id="price" name="price">円
+            <label for="price">金額:円</label>
+            <input type="text" id="price" name="price">
         </div>
         <input type="submit" value="送信">
     </form>
@@ -68,7 +83,7 @@
             <input type="text" name="income_name"><br>
         </div>
         <div class="formField">
-            <label for="price2">金額:</label>
+            <label for="price2">金額:円</label>
             <input type="text" id="price2" name="price2">円
         </div>
         <input type="submit" value="送信">
@@ -102,7 +117,7 @@ $result = DB::select('id', 'date', 'title', 'price')
     ->as_array();
 
 echo '<table>';
-echo '<tr><th>日付</th><th>分類</th><th>金額</th><th>削除</th></tr>';
+echo '<tr><th>日付</th><th>分類</th><th>金額</th><th>削除</th><th>編集</th></tr>';
 foreach ($result as $row) {
     $id = $row['id'];
     $out += $row['price'];
@@ -116,6 +131,13 @@ foreach ($result as $row) {
             <input type="submit" value="削除">
         </form>
     </td>';
+    echo '<td>
+    <form method="POST" action="/demo/hello/public/original/edit/">
+        <input type="hidden" name="edit_id" value="' . $id . '">
+        <input type="submit" value="編集" >
+        </form>
+
+</td> ';
     echo '</tr>';
 }
 echo '</table>';
@@ -133,7 +155,7 @@ $result = DB::select('id', 'date2', 'income_name', 'price2')
     ->as_array();
 
 echo '<table>';
-echo '<tr><th>日付</th><th>収入元</th><th>金額</th><th>削除</th></tr>';
+echo '<tr><th>日付</th><th>収入元</th><th>金額</th><th>削除</th><th>編集</th></tr>';
 foreach ($result as $row) {
     $id2 = $row['id'];
     $in += $row['price2'];
@@ -147,6 +169,13 @@ foreach ($result as $row) {
             <input type="submit" value="削除">
         </form>
     </td>';
+
+    echo '<td>
+    <form method="POST" action="/demo/hello/public/original/edit2/">
+        <input type="hidden" name="edit_id2" value="' . $id2 . '">
+        <input type="submit" value="編集">
+    </form>
+</td>';
     echo '</tr>';
 }
 echo '</table>';
@@ -156,6 +185,8 @@ echo '<p class="total">' . $in . '円の収入です</p>';
 echo '<h2>収支</h2>';
 $all = $in - $out;
 echo '<p class="total">合計は' . $all . '円です</p>';
+
+
 ?>
 
 </body>

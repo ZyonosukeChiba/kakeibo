@@ -27,9 +27,36 @@ class Controller_Original extends Controller
 	 * @access  public
 	 * @return  Response
 	 */
+	/**
+	 * A typical "Hello, Bob!" type example.  This uses a Presenter to
+	 * show how to use them.
+	 *
+	 * @access  public
+	 * @return  Response
+	 */
+
+	 public function before()
+	 {
+	 
+		if ($this->request->action === 'kform') {
+            $this->before_specific_method();
+        }else if ($this->request->action === 'income_form') {
+            $this->before_specific_method();
+        }
+	 }
+
+	 private function before_specific_method()
+	 {
+		if(!Auth::check()=='ture'){
+			Response::redirect('original/form3/');
+		}
+	 }
+
+
 //初期画面表示
 public function action_new(){
-	return View::forge('login');
+	return View::forge('login2');
+	
 }
 public function action_chart(){
 	return View::forge('chart');
@@ -39,8 +66,8 @@ public function action_view(){
 }
 
 
-public function action_js(){
-	return View::forge('footer');
+public function action_signin(){
+	return View::forge('signin');
 }
 	 
 //emailをセッションに保存
@@ -57,6 +84,7 @@ public function action_js(){
 
 	public function action_kform()
 	{
+		// MyFilter::before(); // before メソッドを呼び出し
 		if(Input::post()){
 			
 		$val=Validation::forge();
@@ -85,24 +113,6 @@ public function action_js(){
 
 	
 	
-
-	// public function action_auth3(){
-	// 	if(Input::post()){
-	// 		\Session::instance()->start();
-	// 		$email = Input::post('email'); // フォームからemailの値を取得
-	// 		\Session::set('email', $email); 
-	// 		$username=Input::post('username');
-	// 		$password=Input::post('password');
-	// 		Auth::create_user($username,$password,$email,1);
-	// 		return View::forge('viewtest');
-	// 	}
-	// 	else {
-	// 		// 登録失敗時の処理
-	// 		echo '正しいフォームを入力してください';
-	// 		return View::forge('login2');
-	// 	}
-	
-	// }
 	public function action_auth3()
 {
     if (Input::post()) {
@@ -114,52 +124,28 @@ public function action_js(){
         $created = Auth::create_user($username, $password, $email, 1);
         
         if ($created) {
+			Auth::login($email,$password);
             return View::forge('viewtest');
         } else {
             // 登録失敗時の処理
             echo 'ユーザーの作成に失敗しました';
-            return View::forge('login2');
+            return View::forge('signin');
         }
     } else {
         // フォームが送信されていない場合の処理
         echo '正しいフォームを入力してください';
-        return View::forge('login2');
+        return View::forge('signin');
     }
 }
 
-	public function action_auth4(){
-		if(Input::post()){
-			\Session::instance()->start();
-			$email = Input::post('email'); // フォームからemailの値を取得
-			\Session::set('email', $email); 
-			$username=Input::post('username');
-			$password=Input::post('password');
-			Auth::create_user($username,$password,$email,1);
-			return View::forge('viewtest');
-		}
-		else {
-			// 登録失敗時の処理
-			echo '正しいフォームを入力してください';
-			return View::forge('signin');
-		}
 	
-	}
-
-
-
-
-	/**
-	 * A typical "Hello, Bob!" type example.  This uses a Presenter to
-	 * show how to use them.
-	 *
-	 * @access  public
-	 * @return  Response
-	 */
-	public function action_hello()
-	{
 	
-		return View::forge('login');
-	}
+
+
+
+
+	
+	
 
 
 	
@@ -172,14 +158,20 @@ public function action_js(){
 		
 		return View::forge('viewtest');
 	}
+	public function action_year()
+	{
+		\Session::instance()->start();
+		$year = Input::post('year'); // フォームからemailの値を取得
+		\Session::set('year', $year); 
+		
+		return View::forge('chart');
+	}
 
 
 
 	public function action_out()
 	{
-		// $result= DB::select('*')->from('Friends')->execute()->as_array();
-		// echo '<pre>';
-		// print_r($result);
+		
 		var_dump(Auth::login('aaa@gmail.com','aaa'));
 	}
 
@@ -187,44 +179,60 @@ public function action_js(){
 
 
 	public function action_form3()
-	{\Session::instance()->start();
-		$email = Input::post('email1');// フォームからemailの値を取得
-		\Session::set('email', $email); 
-		 $password=Input::post('password1');
-		if(input::post()){
-		if(Auth::login($email,$password)){
-			return View::forge('viewtest');}
-		else{
-			return View::forge('login2');
-		}}
+	{
+		\Session::instance()->start();
+			$email = Input::post('email1');// フォームからemailの値を取得
+			\Session::set('email', $email); 
+			$password=Input::post('password1');
+			if(input::post()){
+			if(Auth::login($email,$password)){
+				return View::forge('viewtest');}
+			else {
+				echo 'ログインできない';
+				return View::forge('login2');
+			}}
 
-	
-	else{echo 'フォームを入力してください';}
+		
+		else{echo 'フォームを入力してください';}
 
-	return  View::forge('login2');
+		return  View::forge('login2');
+		echo 'ポストされていません';
 	}
 
 
 
 	public function action_logout(){
-
 		Auth::logout();
-		return View::forge('login2');
-	}
-
-
-
-
+		
+ 	if(Auth::check()=='ture'){
+ 	 	echo 'ログアウト失敗';
+		
+ 	 }
+ 	else{
+		echo 'ログアウトしました。';
+		Response::redirect('original/form3/');
 	
-	public function action_index(){
-		$data=array();
-		$data['name']='千葉千葉千葉';
-		return Response::forge(View::forge('test',$data));
 	}
+	}
+
+
+	public function action_signout()
+	{	if(Input::post()){
+		$email=Input::POST('email');
+	
+		DB::delete('users')
+			->where('email', '=', $email)
+			->execute();
+	
+			Response::redirect('original/form3/');}
+	}
+
+
 
 	
 	public function action_income_form()
 	{
+		// MyFilter::before(); 
 		if(Input::post()){
 
 		$val=Validation::forge();
@@ -265,6 +273,7 @@ public function action_js(){
 		else{
 			return View::forge('viewtest');}
 	}
+
 	public function action_delete2()
 	{
 		if(Input::post()){
@@ -279,6 +288,39 @@ public function action_js(){
 			}
 	}
 
+	public function action_edit()
+	{if(Input::post()){
+		$editid = $_POST['edit_id'];
+		// ビューを作成
+		$view = View::forge('edit');
+
+		// 値をビューに設定
+		$view->set('edit_id', $editid);
+		
+	
+		// ビューをレンダリングして返す
+		return $view;
+
+	}else{
+		return View::forge('viewtest');
+	}}
+
+
+	public function action_edit2()
+	{
+		if(Input::post()){
+			$editid2 = $_POST['edit_id2'];
+			// ビューを作成
+			$view = View::forge('edit2');
+	
+			// 値をビューに設定
+			$view->set('edit_id2', $editid2);
+			
+		
+			// ビューをレンダリングして返す
+			return $view;
+	}
+}
 
 
 
@@ -297,3 +339,4 @@ public function action_js(){
 
 	
 }
+

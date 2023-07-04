@@ -30,7 +30,7 @@ module.exports={
       },
     output : {
         path: path.resolve(__dirname,"./public/assets/js/src"),
-        filename:'bundle2.js',
+        filename:'bundle.js',
         
 },
     resolve: {

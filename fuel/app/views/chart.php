@@ -7,20 +7,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
   </head>
   <body>
+
+
+  <p>月ごとの収支を見る</p>
+<form method="POST" action="/demo/hello/public/original/year/">
+    <input type="text" name="year" id="year" >
+    <input type="submit" value="送信">
+</form>
+
   <?php
 
 
 
 $email = Session::get('email');
-if($email != null) {
-    echo $email . 'さんようこそ';
-}
 
 
 
   //支出データ
   $data = array();
-
+  $year = Session::get('year');
+  echo $year;
   for ($i = 1; $i <= 12; $i++) {
       $month = sprintf("%02d", $i); // 2桁の0埋めされた月の形式に変換
      
@@ -28,7 +34,7 @@ if($email != null) {
       $result = DB::select('id', 'date', 'title', 'price')
           ->from('kaeibo')
           ->where('email', '=', $email)
-          ->and_where(DB::expr("DATE_FORMAT(date, '%Y-%m')"), '=', '2023-' . $month)
+          ->and_where(DB::expr("DATE_FORMAT(date, '%Y-%m')"), '=', $year .'-' . $month)
           ->execute()
           ->as_array();
   
@@ -58,7 +64,7 @@ for ($i = 1; $i <= 12; $i++) {
     $result = DB::select('id', 'date2', 'income_name', 'price2')
         ->from('income')
         ->where('email', '=', $email)
-        ->and_where(DB::expr("DATE_FORMAT(date2, '%Y-%m')"), '=', '2023-' . $month)
+        ->and_where(DB::expr("DATE_FORMAT(date2, '%Y-%m')"), '=', $year .'-' . $month)
         ->execute()
         ->as_array();
 
