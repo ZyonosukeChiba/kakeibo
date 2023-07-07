@@ -19,6 +19,10 @@
  * @package  app
  * @extends  Controller
  */
+
+
+
+
 class Controller_Welcome extends Controller
 {
 	/**
@@ -29,7 +33,11 @@ class Controller_Welcome extends Controller
 	 */
 	public function action_index()
 	{
-		return Response::forge(View::forge('welcome/index'));
+		// 上で作成された ORM モデル
+		$orm = \Model\Example::forge();
+
+		// $b = new pref;
+		// echo $b->getPref();
 		
 	}
 

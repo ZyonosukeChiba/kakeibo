@@ -11,7 +11,7 @@
 </head>
 <body>
     <?php
-$out = 0;
+
 $result = DB::select('id', 'date', 'title', 'price')
     ->from('kaeibo')
     ->where('id', '=', $edit_id)

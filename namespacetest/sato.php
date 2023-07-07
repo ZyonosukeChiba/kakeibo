@@ -1,25 +1,8 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>収支グラフ</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
-  </head>
-  <body>
-
-
-  <p>月ごとの収支を見る</p>
-<form method="POST" action="/demo/hello/public/original/year/">
-    <input type="text" name="year" id="year" >
-    <input type="submit" value="送信">
-</form>
-
-  <?php
+<?php
 
 
 
-$email = Session::get('email');
+// $email = Session::get('email');
 
 
 
@@ -90,45 +73,3 @@ $jsonData2 = json_encode($total2);
 
 
 ?>
-
-<script>
-  var data = <?php echo $jsonData; ?>;
-  var data2 = <?php echo $jsonData2; ?>;
-  console.log(data);
-  console.log(data2);
-
-    var barChartData = {
-  labels: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
-  datasets: [
-    { 
-      label: '収入',
-      data: [data2[1],data2[2],data2[3],data2[4],data2[5],data2[6],data2[7],data2[8],data2[9],data2[10],data2[11],data2[12]],
-      borderColor : "rgba(154,164,235,0.8)",
-      backgroundColor : "rgba(154,164,235,0.5)",
-    },
-    { 
-      label: '出費',
-      data: [data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9],data[10],data[11],data[12]],
-      borderColor : "rgba(54,164,235,0.8)",
-      backgroundColor : "rgba(54,164,235,0.5)",
-    },
-  ], 
-}; 
-
-var complexChartOption = {
-  responsive: true,
-};
-
-window.onload = function() {
- var ctx = document.getElementById("canvas").getContext("2d");
-  window.myBar = new Chart(ctx, {
-    type: 'bar',
-    data: barChartData,
-    options: complexChartOption
-  });
-};
-</script>
-
-    <canvas id="canvas" width="300px" height="300px"></canvas>
- </body>
-</html> 

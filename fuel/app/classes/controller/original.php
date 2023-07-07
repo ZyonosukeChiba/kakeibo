@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fuel is a fast, lightweight, community driven PHP 5.4+ framework.
  *
@@ -19,6 +20,10 @@
  * @package  app
  * @extends  Controller
  */
+
+ require_once 'Model.php';
+
+ use \Model\Welcome;
 class Controller_Original extends Controller
 {
 	/**
@@ -61,6 +66,9 @@ public function action_new(){
 public function action_chart(){
 	return View::forge('chart');
 }
+public function action_chart2(){
+	return View::forge('chart2');
+}
 public function action_view(){
 	return View::forge('viewtest');
 }
@@ -86,21 +94,23 @@ public function action_signin(){
 	{
 		// MyFilter::before(); // before メソッドを呼び出し
 		if(Input::post()){
-			
+		$email = Session::get('email');
 		$val=Validation::forge();
 		$val->add_field('date','日付','required');
 		$val->add_field('title','分類','required');
 		$val->add_field('price','金額','required');
 		if($val->run()){
-			$email=Session::get('email');
-			DB::insert('kaeibo')->set(array(
-				'date'=>Input::post('date'),
-				'title'=>Input::post('title'),
-				'price'=>Input::post('price'),
+            $date = Input::post('date');
+            $title = Input::post('title');
+            $price = Input::post('price');
 			
-				'email'=>$email
-			))->execute();
-				}
+
+			$kform = new Welcome();
+			$kform -> kform($email,$date,$title,$price);
+            
+           
+		
+        }
 		else{
 			foreach($val->error()as $key=>$value){
 				echo $value->get_message();
@@ -110,6 +120,40 @@ public function action_signin(){
 		return View::forge('viewtest');
 
 	}
+
+
+    public function action_income_form()
+	{
+		
+		if(Input::post()){
+        $email=Session::get('email');
+		$val=Validation::forge();
+		$val->add_field('date2','日付','required');
+		$val->add_field('income_name','分類','required');
+		$val->add_field('price2','金額','required');
+		if($val->run()){
+            $date2 = Input::post('date2');
+            $income_name = Input::post('income_name');
+            $price2 = Input::post('price2');
+			
+            $income = new Welcome();
+            $income ->income($email,$date2,$income_name,$price2);
+			
+			
+
+				}else{
+			foreach($val->error()as $key=>$value){
+				echo $value->get_message();
+			}
+			exit;
+
+			}
+			}
+
+     return View::forge('viewtest');
+
+	}    
+	
 
 	
 	
@@ -164,7 +208,7 @@ public function action_signin(){
 		$year = Input::post('year'); // フォームからemailの値を取得
 		\Session::set('year', $year); 
 		
-		return View::forge('chart');
+		return View::forge('chart2');
 	}
 
 
@@ -200,6 +244,25 @@ public function action_signin(){
 	}
 
 
+	public function action_form4()
+	{if(input::post()){
+		\Session::instance()->start();
+			$email = Input::post('email1');// フォームからemailの値を取得
+			\Session::set('email', $email); 
+			$password=Input::post('password1');
+			$usermodel=new Model1();
+			$usermodel->setData($email,$password);
+			if(Model_user::setData()){
+				echo '成功';
+			}else{
+				echo 'しっぱい';
+			}}else
+			{
+				return  View::forge('login2');
+			}
+	}
+
+
 
 	public function action_logout(){
 		Auth::logout();
@@ -230,36 +293,7 @@ public function action_signin(){
 
 
 	
-	public function action_income_form()
-	{
-		// MyFilter::before(); 
-		if(Input::post()){
-
-		$val=Validation::forge();
-		$val->add_field('date2','日付','required');
-		$val->add_field('income_name','分類','required');
-		$val->add_field('price2','金額','required');
-		if($val->run()){
-			$email=Session::get('email');
-			DB::insert('income')->set(array(
-				'date2'=>Input::post('date2'),
-				'income_name'=>Input::post('income_name'),
-				'price2'=>Input::post('price2'),
-				'email'=>$email
-				))->execute();
-
-				}else{
-			foreach($val->error()as $key=>$value){
-				echo $value->get_message();
-			}
-			exit;
-
-			}
-			}
-
-     return View::forge('viewtest');
-
-	}
+	
 
 	public function action_delete()
 	{

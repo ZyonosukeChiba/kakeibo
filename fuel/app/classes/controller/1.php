@@ -21,15 +21,15 @@
  */
 
 
-require_once 'Model.php';
 
- use \Model\Welcome;
 
-class Controller_MyFilter extends Controller
+class Controller_1 extends Controller
 {
-    public function action_index()
-    {
-        $results = Welcome::get_results();
-		echo $results;
-    }
-}   
+public function action_t(){
+	return View::forge('testc');
+}
+public function action_q(){
+	return View::forge('2');
+}
+
+}

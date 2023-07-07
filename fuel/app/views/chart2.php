@@ -8,13 +8,16 @@
   </head>
   <body>
 
+  <h2>Year Selection</h2>
 
-  <p>月ごとの収支を見る</p>
-<form method="POST" action="/demo/hello/public/original/year/">
-    <input type="text" name="year" id="year" >
-    <input type="submit" value="送信">
+
+  <form action="/demo/hello/public/original/year/" method="POST">
+  <button type="button" data-bind="click: previousYear">Previous</button>
+  <input type="hidden" name="year" data-bind="selectedYear" />
+  <span data-bind="text: selectedYear" ></span>
+  <button type="button" data-bind="click: nextYear">Next</button>
+  <button type="submit">Submit</button>
 </form>
-
   <?php
 
 
@@ -26,7 +29,7 @@ $email = Session::get('email');
   //支出データ
   $data = array();
   $year = Session::get('year');
-  echo $year;
+  
   for ($i = 1; $i <= 12; $i++) {
       $month = sprintf("%02d", $i); // 2桁の0埋めされた月の形式に変換
      
@@ -92,6 +95,25 @@ $jsonData2 = json_encode($total2);
 ?>
 
 <script>
+
+function YearSelectionViewModel() {
+            var self = this;
+            self.selectedYear = ko.observable(new Date().getFullYear());
+            
+            self.previousYear = function () {
+                var currentYear = self.selectedYear();
+                console.log(currentYear);
+                self.selectedYear(currentYear - 1);
+            };
+
+            self.nextYear = function () {
+                var currentYear = self.selectedYear();
+                console.log(currentYear);
+                self.selectedYear(currentYear + 1);
+            };
+        }
+       
+        ko.applyBindings(new YearSelectionViewModel());
   var data = <?php echo $jsonData; ?>;
   var data2 = <?php echo $jsonData2; ?>;
   console.log(data);
