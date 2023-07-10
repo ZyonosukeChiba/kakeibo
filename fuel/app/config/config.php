@@ -469,6 +469,7 @@ return array(
 
 		'packages' => array(
 			'orm',
+			// 'cors',
 			'auth'
 		),)
 
@@ -533,4 +534,7 @@ return array(
 
 		// 'language' => array(),
 	// ),
+
+	
+	
 );

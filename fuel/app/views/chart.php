@@ -15,7 +15,7 @@
     <input type="submit" value="送信">
 </form>
 
-  <?php
+<?php
 
 
 
@@ -85,6 +85,8 @@ $total2[$i] = array_sum($data2[$i]);
 $jsonData2 = json_encode($total2);
 
 
+echo  $jsonData;
+echo  $jsonData2;
 
 
 

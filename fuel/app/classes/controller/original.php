@@ -69,9 +69,21 @@ public function action_chart(){
 public function action_chart2(){
 	return View::forge('chart2');
 }
+public function action_chart3(){
+	return View::forge('chart3');
+}
+public function action_c1(){
+	return View::forge('1');
+}
 public function action_view(){
 	return View::forge('viewtest');
 }
+
+
+public function action_q(){
+	return View::forge('1');
+}
+
 
 
 public function action_signin(){
@@ -208,7 +220,7 @@ public function action_signin(){
 		$year = Input::post('year'); // フォームからemailの値を取得
 		\Session::set('year', $year); 
 		
-		return View::forge('chart2');
+		return View::forge('1');
 	}
 
 

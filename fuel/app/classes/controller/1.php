@@ -22,14 +22,22 @@
 
 
 
-
+ header('Access-Control-Allow-Origin: *');
 class Controller_1 extends Controller
 {
 public function action_t(){
-	return View::forge('testc');
+	return View::forge('call');
 }
 public function action_q(){
-	return View::forge('2');
+	return View::forge('1');
+}
+
+public function action_s(){
+	return View::forge('chart2');
+}
+
+public function action_s2(){
+	return View::forge('chart3');
 }
 
 }

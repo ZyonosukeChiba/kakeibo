@@ -21,15 +21,16 @@
     
         <h1>家計簿アプリ</h1>
         <div class="button">
+            
+                <form method="POST" action="/demo/hello/public/original/c1/">  
+                <button type="submit">グラフを見る</button>
+                </form>
         
+
                 <form method="POST" action="/demo/hello/public/original/logout/">
                 <button type="submit">ログアウト</button>
                 </form>
 
-                
-                <form method="POST" action="/demo/hello/public/original/chart/">  
-                <button type="submit">グラフを見る</button>
-                </form>
         
                 <form method="POST" action="/demo/hello/public/original/signout/">
                 <input type="hidden" name="email" value="<?php $email = Session::get('email');
