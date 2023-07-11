@@ -42,21 +42,13 @@ class Controller_Original extends Controller
 
 	 public function before()
 	 {
-		try{
+	 
 		if ($this->request->action === 'kform') {
             $this->before_specific_method();
         }else if ($this->request->action === 'income_form') {
             $this->before_specific_method();
         }
-	 }catch (\Exception $e) {
-        // エラーハンドリングおよびリダイレクトの処理を行う
-
-        // エラー情報をセッションなどに保存する
-        \Session::set('error_message', $e->getMessage());
-
-        // リダイレクト先のURLを指定してリダイレクトする
-        \Response::redirect('/error');
-		}}
+	 }
 
 	 private function before_specific_method()
 	 {
@@ -82,9 +74,6 @@ public function action_chart3(){
 }
 public function action_c1(){
 	return View::forge('1');
-}
-public function action_viewyear(){
-	return View::forge('year');
 }
 public function action_view(){
 	return View::forge('viewtest');
@@ -143,36 +132,6 @@ public function action_signin(){
 		return View::forge('viewtest');
 
 	}
-	public function action_kform2()
-	{
-		// MyFilter::before(); // before メソッドを呼び出し
-		if(Input::post()){
-		$email = Session::get('email');
-		$val=Validation::forge();
-		$val->add_field('date','日付','required');
-		$val->add_field('title','分類','required');
-		$val->add_field('price','金額','required');
-		if($val->run()){
-            $date = Input::post('date');
-            $title = Input::post('title');
-            $price = Input::post('price');
-			$edit_id=Input::post('editid');
-
-			$kform2 = new Welcome();
-			$kform2 -> kform2($email,$date,$title,$price,$edit_id);
-            
-  
-		
-        }
-		else{
-			foreach($val->error()as $key=>$value){
-				echo $value->get_message();
-			}exit;
-		}
-		}
-		return View::forge('viewtest');
-
-	}
 
 
     public function action_income_form()
@@ -193,36 +152,6 @@ public function action_signin(){
             $income ->income($email,$date2,$income_name,$price2);
 			
 			
-
-				}else{
-			foreach($val->error()as $key=>$value){
-				echo $value->get_message();
-			}
-			exit;
-
-			}
-			} 
-			 return View::forge('viewtest');
-		}
-
-    public function action_income_form2()
-	{
-		
-		if(Input::post()){
-        $email=Session::get('email');
-		$val=Validation::forge();
-		$val->add_field('date2','日付','required');
-		$val->add_field('income_name','分類','required');
-		$val->add_field('price2','金額','required');
-		if($val->run()){
-            $date2 = Input::post('date2');
-            $income_name = Input::post('income_name');
-            $price2 = Input::post('price2');
-			$edit_id2=Input::post('editid2');
-            $income2 = new Welcome();
-            $income2 ->income2($email,$date2,$income_name,$price2,$edit_id2);
-			
-			// echo $edit_id2;
 
 				}else{
 			foreach($val->error()as $key=>$value){

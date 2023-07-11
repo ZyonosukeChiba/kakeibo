@@ -5,7 +5,6 @@
      <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script> 
 
      <?php echo Asset::css('styles.css'); ?>
-     <?php echo Asset::js('view.js'); ?>
     <title>家計簿アプリ</title>
     
 </head>
@@ -54,7 +53,7 @@
         </div>
         <div class="formField">
             <label for="title">分類:</label>
-            <input type="text" name="title" list="payment-select" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off" data-bind="value :k,valueUpdate:'input"/><br>
+            <input type="text" name="title" list="payment-select" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off"><br>
             <datalist id="payment-select">
                 <option value="">please choose an option</option>
                 <option value="食費">食費</option>
@@ -65,9 +64,9 @@
         </div>
         <div class="formField">
             <label for="price">金額:円</label>
-            <input type="text" id="price" name="price" data-bind="value :p,valueUpdate:'input"/>
+            <input type="text" id="price" name="price">
         </div>
-        <input type="submit" value="送信" >
+        <input type="submit" value="送信">
     </form>
 </div>
 
@@ -190,9 +189,6 @@ echo '<p class="total">合計は' . $all . '円です</p>';
 
 
 ?>
-
-
-
 
 </body>
 </html>

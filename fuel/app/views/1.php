@@ -13,8 +13,10 @@
 <body>
 
 <form method="POST" action="/demo/hello/public/original/year/">
+   
+
 <select name="year">
-<option value="">-</option>
+<option value="2023">-</option>
 <option value="2023">2023</option>
 <option value="2024">2024</option>
 <option value="2025">2025</option>
@@ -27,33 +29,14 @@
 <input type="submit" value="送信">
 </form>
 
-<span data-bind="text: myVariable"></span>
+
   <script>
     
-    fetch('http://localhost:8880/demo/hello/public/original/viewyear/')
-
-    .then(response => response.json())
-      .then(data => {
-          console.log(data);
-          function MyViewModel() {
-      var self = this;
-      
-      // 変数を定義
-      const mozi ='年のデータ';
-      self.myVariable = ko.observable(data+mozi);
-    }
-   
-    
-    // ViewModelをバインディング
-    var viewModel = new MyViewModel();
-    ko.applyBindings(viewModel);
-        });
-      
     fetch('http://localhost:8880/demo/hello/public/original/chart2/')
    
       .then(response => response.json())
       .then(data => {
-       
+        console.log(data);
         // データを使って何らかの処理を行う
         var barChartData = {
           // labels: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],

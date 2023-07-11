@@ -24,7 +24,7 @@ $result = DB::select('id', 'date', 'title', 'price')
 ?>
 <div class="formContainer">
     <h2>入力内容の変更</h2>
-    <form method="POST" action="/demo/hello/public/original/kform2/">
+    <form method="POST" action="/demo/hello/public/original/kform/">
         <div class="uiForm">
             <div class="formField">
                 <label for="date">日付:</label>
@@ -33,7 +33,7 @@ $result = DB::select('id', 'date', 'title', 'price')
         </div>
         <div class="formField">
             <label for="title">分類:</label>
-            <input type="text" name="title"  value="<?php echo $title ?>" list= "payment-select" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off"><br>
+            <input type="text" name="title"  value="<?php echo $title ?> list="payment-select" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off"><br>
             <datalist id="payment-select">
                 <option value="">please choose an option</option>
                 <option value="食費">食費</option>
@@ -45,7 +45,6 @@ $result = DB::select('id', 'date', 'title', 'price')
         <div class="formField">
             <label for="price">金額:</label>
             <input type="text" id="price" name="price" value="<?php echo $price ?>">円
-            <input type="hidden"  name="editid" value="<?php echo $edit_id ?>">
         </div>
         <input type="submit" value="送信">
     </form>
