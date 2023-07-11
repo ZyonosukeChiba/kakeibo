@@ -21,13 +21,13 @@
     $income_name = $result[0]['income_name'];
     $price2 = $result[0]['price2'];
    
-
+echo $edit_id2;
 ?>
 
 
 <div class="formContainer">
     <h2>収入</h2>
-    <form method="POST" action="/demo/hello/public/original/income_form/">
+    <form method="POST" action="/demo/hello/public/original/income_form2/">
         <div class="uiForm">
             <div class="formField">
                 <label for="date2">日付:</label>
@@ -41,6 +41,7 @@
         <div class="formField">
             <label for="price2">金額:円</label>
             <input type="text" id="price2" name="price2" value="<?php echo $price2 ?>">
+            <input type="hidden"  name="editid2" value="<?php echo $edit_id2 ?>">
         </div>
         <input type="submit" value="送信">
     </form>

@@ -21,6 +21,26 @@ class Welcome extends \Model {
        
         ))->execute();
     }
+    public static function kform2($email,$date,$title,$price,$edit_id)
+    {
+        \DB::update('kaeibo')->set(array(
+            'date'=>$date,
+            'title'=>$title,
+            'price'=>$price,
+            'email'=>$email
+        )) ->where('id', '=', $edit_id)
+        ->execute();
+    }
+    public static function income2($email,$date2,$income_name,$price2,$edit_id2)
+    { \DB::update('income')->set(array(
+        'date2'=>$date2,
+        'income_name'=>$income_name,
+        'price2'=>$price2,
+        'email'=>$email
+       
+        ))->where('id', '=', $edit_id2)
+        ->execute();
+    }
 
 
 
