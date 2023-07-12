@@ -28,18 +28,18 @@
 </select>年
 <input type="submit" value="送信">
 </form>
-
+<span data-bind="text: myVariable"></span>
 
   <script>
-    
+     
     fetch('http://localhost:8880/demo/hello/public/original/chart2/')
    
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        // データを使って何らかの処理を行う
+       
         var barChartData = {
-          // labels: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+        
           datasets: [
             { 
               label: '収入',
@@ -83,14 +83,28 @@
         console.error('データの取得に失敗しました:', error);
       });
 
+      var date;
+fetch('http://localhost:8880/demo/hello/public/original/q/')
+  .then(response => response.json())
+  .then(data => {
+    date = data;
+    console.log(date);
+
+    function MyViewModel() {
+      var self = this;
+      self.myVariable = ko.observable(date+'年の収支グラフ');
+    }
+
+    // ViewModelをバインディング
+    var viewModel = new MyViewModel();
+    ko.applyBindings(viewModel);
+  })
+  .catch(error => {
+    console.error('データの取得に失敗しました:', error);
+  });
 
 
 
-      function YearSelectionViewModel() {
-            var self = this;
-            self.selectedYear =
-
-        ko.applyBindings(new YearSelectionViewModel());}
   </script>
 
   <canvas id="canvas" width="300px" height="300px"></canvas>

@@ -26,7 +26,7 @@
 class Controller_1 extends Controller
 {
 public function action_t(){
-	return View::forge('call');
+	return View::forge('signin2');
 }
 public function action_q(){
 	return View::forge('1');

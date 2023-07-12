@@ -81,7 +81,7 @@ public function action_view(){
 
 
 public function action_q(){
-	return View::forge('1');
+	return View::forge('year');
 }
 
 
@@ -209,7 +209,7 @@ public function action_signin(){
 	public function action_month()
 	{
 		\Session::instance()->start();
-		$month = Input::post('month'); // フォームからemailの値を取得
+		$month = Input::post('month'); 
 		\Session::set('month', $month); 
 		
 		return View::forge('viewtest');
@@ -217,7 +217,7 @@ public function action_signin(){
 	public function action_year()
 	{
 		\Session::instance()->start();
-		$year = Input::post('year'); // フォームからemailの値を取得
+		$year = Input::post('year'); 
 		\Session::set('year', $year); 
 		
 		return View::forge('1');
@@ -225,11 +225,7 @@ public function action_signin(){
 
 
 
-	public function action_out()
-	{
-		
-		var_dump(Auth::login('aaa@gmail.com','aaa'));
-	}
+	
 
 	
 
@@ -256,23 +252,6 @@ public function action_signin(){
 	}
 
 
-	public function action_form4()
-	{if(input::post()){
-		\Session::instance()->start();
-			$email = Input::post('email1');// フォームからemailの値を取得
-			\Session::set('email', $email); 
-			$password=Input::post('password1');
-			$usermodel=new Model1();
-			$usermodel->setData($email,$password);
-			if(Model_user::setData()){
-				echo '成功';
-			}else{
-				echo 'しっぱい';
-			}}else
-			{
-				return  View::forge('login2');
-			}
-	}
 
 
 
