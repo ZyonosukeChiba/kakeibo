@@ -24,7 +24,7 @@ $result = DB::select('id', 'date', 'title', 'price')
 ?>
 <div class="formContainer">
     <h2>入力内容の変更</h2>
-    <form method="POST" action="/demo/hello/public/original/kform/">
+    <form method="POST" action="/demo/hello/public/original/kform2/">
         <div class="uiForm">
             <div class="formField">
                 <label for="date">日付:</label>
@@ -46,6 +46,7 @@ $result = DB::select('id', 'date', 'title', 'price')
             <label for="price">金額:</label>
             <input type="text" id="price" name="price" value="<?php echo $price ?>">円
         </div>
+        <input type="hidden"  name="editid" value="<?php echo $edit_id ?>">
         <input type="submit" value="送信">
     </form>
 </div>

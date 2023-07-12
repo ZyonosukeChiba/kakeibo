@@ -27,7 +27,7 @@
 
 <div class="formContainer">
     <h2>収入</h2>
-    <form method="POST" action="/demo/hello/public/original/income_form/">
+    <form method="POST" action="/demo/hello/public/original/income_form2/">
         <div class="uiForm">
             <div class="formField">
                 <label for="date2">日付:</label>
@@ -42,6 +42,7 @@
             <label for="price2">金額:円</label>
             <input type="text" id="price2" name="price2" value="<?php echo $price2 ?>">
         </div>
+        <input type="hidden"  name="editid2" value="<?php echo $edit_id2 ?>">
         <input type="submit" value="送信">
     </form>
 </div>
