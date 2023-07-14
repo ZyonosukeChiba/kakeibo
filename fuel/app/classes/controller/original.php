@@ -274,18 +274,9 @@ public function action_auth3()
 	$message = \Session::get_flash('exist_email');
 if ($message) {
     echo $message;
+	}
 
-}
-
-    if (Input::post()) {
-        $validation = Validation::forge();
-        $validation->add('email', 'メールアドレス')
-            ->add_rule('required')
-            ->add_rule('valid_email')
-            ->add_rule('is_unique_email'); // is_uniqueルールを使用し、重複をチェック
-
-        if ($validation->run()) {
-            // バリデーションが成功した場合の処理
+if (Input::post()) {
             \Session::instance()->start();
             $email = Input::post('email');
             \Session::set('email', $email);
@@ -300,13 +291,8 @@ if ($message) {
                 // 登録失敗時の処理
                 echo 'ユーザーの作成に失敗しました';
                 return View::forge('signin');
-            }
+			}
         } else {
-            // バリデーションエラーがある場合の処理
-            echo '正しいフォームを入力してください';
-            return View::forge('signin');
-        }
-    } else {
         // フォームが送信されていない場合の処理
       
         return View::forge('signin');
