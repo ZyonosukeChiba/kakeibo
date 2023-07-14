@@ -182,7 +182,7 @@ const App = () => {
 </div>
 
 <div class="formContainer">
-    <h2>収入</h2>
+    <h3>収入</h3>
     <form method="POST" action="/demo/hello/public/original/income_form/">
         <div class="uiForm">
             <div class="formField">

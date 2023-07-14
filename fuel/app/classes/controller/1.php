@@ -21,6 +21,7 @@
  */
 
 
+ use \Model\Sample;
 
  header('Access-Control-Allow-Origin: *');
 class Controller_1 extends Controller
@@ -38,6 +39,11 @@ public function action_s(){
 
 public function action_s2(){
 	return View::forge('chart3');
+}
+public function action_test() {
+	// モデルから取得したデータを表示
+	$rows = Sample::get_results();
+	var_export($rows);
 }
 
 }

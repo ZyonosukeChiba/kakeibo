@@ -1,7 +1,7 @@
 <?php 
 namespace Model;
 
-class Welcome extends \Model {
+class Model extends \Model {
 
     public static function kform($email,$date,$title,$price)
     {
@@ -40,6 +40,16 @@ class Welcome extends \Model {
         'email'=>$email
 
         ))->where('id', '=', $edit_id2)
+        ->execute();
+    }
+    public static function delete($deleteId)
+    { \DB::delete('kaeibo')
+        ->where('id', '=', $deleteId)
+        ->execute();
+    }
+    public static function delete2($deleteId2)
+    { \DB::delete('income')
+        ->where('id', '=', $deleteId2)
         ->execute();
     }
 
