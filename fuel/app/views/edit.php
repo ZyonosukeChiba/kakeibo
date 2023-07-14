@@ -10,7 +10,7 @@
     
 </head>
 <body>
-    <?php
+<?php
 
 $result = DB::select('id', 'date', 'title', 'price')
     ->from('kaeibo')
@@ -33,7 +33,7 @@ $result = DB::select('id', 'date', 'title', 'price')
         </div>
         <div class="formField">
             <label for="title">分類:</label>
-            <input type="text" name="title"  value="<?php echo $title ?>" list="payment-select" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off"><br>
+          <input type="text" name="title"  value="<?php echo $title ?>" list="payment-select" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off"><br>
             <datalist id="payment-select">
                 <option value="">please choose an option</option>
                 <option value="食費">食費</option>

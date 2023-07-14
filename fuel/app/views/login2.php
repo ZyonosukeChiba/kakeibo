@@ -38,7 +38,9 @@ const App = () => {
         </form>
 
       </div>
-      
+      <form method="POST" action="/demo/hello/public/original/auth3/">
+                <button className="sign" type="submit">サインインする</button>
+                </form>
     </div>
    )
 }

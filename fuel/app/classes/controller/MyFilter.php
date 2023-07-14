@@ -21,15 +21,17 @@
  */
 
 
-require_once 'Model.php';
+// require_once 'Model.php';
 
- use \Model\Welcome;
+//  use app\Model\newclass;
 
 class Controller_MyFilter extends Controller
 {
     public function action_index()
-    {
-        $results = Welcome::get_results();
-		echo $results;
-    }
+	{
+		// モデルから文字列を受け取ってvar_dumpで無理矢理画面に表示させる
+		$test = Welcome2::get_hello();
+		var_dump($test);
+		return Response::forge(View::forge('welcome/index'));
+	}
 }   

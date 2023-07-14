@@ -21,7 +21,7 @@
  * @extends  Controller
  */
 
-require_once 'Model.php';
+require_once ('model/Model.php');
 
 use \Model\Welcome;
 class Controller_Original extends Controller
@@ -41,15 +41,20 @@ class Controller_Original extends Controller
  */
 
  public function before()
-{
+{  try {
 
 if ($this->request->action === 'kform') {
 	$this->before_specific_method();
 }else if ($this->request->action === 'income_form') {
 	$this->before_specific_method();
-}
-}
+}}catch (Exception $e) {
+	// エラーが発生した場合の処理
+	$error_code = $e->getCode(); 
+	// リダイレクトを行う
+	Response::redirect('original/form3/', $error_code); // リダイレクト先のURLを指定
 
+}
+}
  private function before_specific_method()
 {
 if(!Auth::check()=='ture'){
@@ -60,10 +65,10 @@ if(!Auth::check()=='ture'){
 
 //初期画面表示
  public function action_new(){
-return View::forge('login2');
+return View::forge('signin');
 
 }
-public function action_chart(){
+ public function action_chart(){
 return View::forge('chart');
 }
  public function action_chart2(){
@@ -103,32 +108,32 @@ return View::forge('viewtest');
 
  public function action_kform()
 {
-// MyFilter::before(); // before メソッドを呼び出し
- if(Input::post()){
- $email = Session::get('email');
- $val=Validation::forge();
- $val->add_field('date','日付','required');
-$val->add_field('title','分類','required');
-$val->add_field('price','金額','required');
-if($val->run()){
-	$date = Input::post('date');
-	$title = Input::post('title');
-	$price = Input::post('price');
-	
 
-	$kform = new Welcome();
-	$kform -> kform($email,$date,$title,$price);
-	
-	
+	if(Input::post()){
+	$email = Session::get('email');
+	$val=Validation::forge();
+	$val->add_field('date','日付','required');
+	$val->add_field('title','分類','required');
+	$val->add_field('price','金額','required');
+	if($val->run()){
+		$date = Input::post('date');
+		$title = Input::post('title');
+		$price = Input::post('price');
+		
 
-}
-else{
-	foreach($val->error()as $key=>$value){
-		echo $value->get_message();
-	}exit;
-}
-}
-return View::forge('viewtest');
+		$kform = new Welcome();
+		$kform -> kform($email,$date,$title,$price);
+		
+		
+
+	}
+	else{
+		foreach($val->error()as $key=>$value){
+			echo $value->get_message();
+		}exit;
+	}
+	}
+	return View::forge('viewtest');
 
 }
 
@@ -169,7 +174,7 @@ return View::forge('viewtest');
 
 public function action_kform2()
 	{
-		// MyFilter::before(); // before メソッドを呼び出し
+		
 		if(Input::post()){
 		$email = Session::get('email');
 		$val=Validation::forge();
@@ -225,7 +230,6 @@ public function action_kform2()
 			exit;
 
 			}
-
 			} return View::forge('viewtest');
 		}
 
@@ -233,30 +237,82 @@ public function action_kform2()
 
 
 
+// public function action_auth3()
+// {
+// if (Input::post()) {
+// $validation = \Validation::forge();
+// $validation->add('email', 'メールアドレス')
+// ->add_rule('is_unique_email');
+// if($validation->run()){
+// 	if (Input::post()) {
+// \Session::instance()->start();
+// $email = Input::post('email'); // フォームからemailの値を取得
+// \Session::set('email', $email); 
+// $username = Input::post('email');
+// $password = Input::post('password');
+// $created = Auth::create_user($username, $password, $email, 1);
+
+// if ($created) {
+// 	Auth::login($email,$password);
+// 	return View::forge('viewtest');
+// } else {
+// 	// 登録失敗時の処理
+// 	echo 'ユーザーの作成に失敗しました';
+// 	return View::forge('signin');
+// }
+// }
+// }} else {
+// // フォームが送信されていない場合の処理
+// echo '正しいフォームを入力してください';
+// return View::forge('signin');
+// }
+
+// }
+
 public function action_auth3()
 {
-if (Input::post()) {
-\Session::instance()->start();
-$email = Input::post('email'); // フォームからemailの値を取得
-\Session::set('email', $email); 
-$username = Input::post('username');
-$password = Input::post('password');
-$created = Auth::create_user($username, $password, $email, 1);
+	$message = \Session::get_flash('exist_email');
+if ($message) {
+    echo $message;
 
-if ($created) {
-	Auth::login($email,$password);
-	return View::forge('viewtest');
-} else {
-	// 登録失敗時の処理
-	echo 'ユーザーの作成に失敗しました';
-	return View::forge('signin');
 }
-} else {
-// フォームが送信されていない場合の処理
-echo '正しいフォームを入力してください';
-return View::forge('signin');
+
+    if (Input::post()) {
+        $validation = Validation::forge();
+        $validation->add('email', 'メールアドレス')
+            ->add_rule('required')
+            ->add_rule('valid_email')
+            ->add_rule('is_unique_email'); // is_uniqueルールを使用し、重複をチェック
+
+        if ($validation->run()) {
+            // バリデーションが成功した場合の処理
+            \Session::instance()->start();
+            $email = Input::post('email');
+            \Session::set('email', $email);
+            $username = Input::post('email');
+            $password = Input::post('password');
+            $created = Auth::create_user($username, $password, $email, 1);
+
+            if ($created) {
+                Auth::login($email, $password);
+                return View::forge('viewtest');
+            } else {
+                // 登録失敗時の処理
+                echo 'ユーザーの作成に失敗しました';
+                return View::forge('signin');
+            }
+        } else {
+            // バリデーションエラーがある場合の処理
+            echo '正しいフォームを入力してください';
+            return View::forge('signin');
+        }
+    } else {
+        // フォームが送信されていない場合の処理
+      
+        return View::forge('signin');
+    }
 }
-}
+
 
 
 
@@ -304,7 +360,7 @@ public function action_form3()
 	if(Auth::login($email,$password)){
 		return View::forge('viewtest');}
 	else {
-		echo 'ログインできない';
+		echo 'ログインできません';
 		return View::forge('login2');
 	}}
 
