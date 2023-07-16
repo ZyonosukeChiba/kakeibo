@@ -24,7 +24,7 @@
         <h1>家計簿アプリ</h1>
         <div class="button">
             
-                <form method="POST" action="/demo/hello/public/original/c1/">  
+                <form method="POST" action="/demo/hello/public/original/display_chart/">  
                 <button type="submit">グラフを見る</button>
                 </form>
         
@@ -50,7 +50,7 @@
 
  
 <p>月ごとの収支を見る</p>
-<form method="POST" action="/demo/hello/public/original/month/">
+<form method="POST" action="/demo/hello/public/original/select_month/">
     <input type="month" name="month" id="month">
     <button type="submit">送信</button>
 </form>
@@ -83,13 +83,13 @@ foreach ($result as $row) {
     echo '<td>' . $row['title'] . '</td>';
     echo '<td>' . $row['price'] . '円</td>';
     echo '<td>
-        <form method="POST" action="/demo/hello/public/original/delete/">
+        <form method="POST" action="/demo/hello/public/original/kakeibo_delete/">
             <input type="hidden" name="delete_id" value="' . $id . '">
             <input type="submit" value="削除">
         </form>
     </td>';
     echo '<td>
-    <form method="POST" action="/demo/hello/public/original/edit/">
+    <form method="POST" action="/demo/hello/public/original/display_edit_kakeibo/">
         <input type="hidden" name="edit_id" value="' . $id . '">
         <input type="submit" value="編集" >
         </form>
@@ -121,14 +121,14 @@ foreach ($result as $row) {
     echo '<td>' . $row['income_name'] . '</td>';
     echo '<td>' . $row['price2'] . '円</td>';
     echo '<td>
-        <form method="POST" action="/demo/hello/public/original/delete2/">
+        <form method="POST" action="/demo/hello/public/original/income_delete/">
             <input type="hidden" name="delete_id2" value="' . $id2 . '">
             <input type="submit" value="削除">
         </form>
     </td>';
 
     echo '<td>
-    <form method="POST" action="/demo/hello/public/original/edit2/">
+    <form method="POST" action="/demo/hello/public/original/display_edit_income/">
         <input type="hidden" name="edit_id2" value="' . $id2 . '">
         <input type="submit" value="編集">
     </form>
@@ -154,7 +154,7 @@ const App = () => {
    
     <div class="formContainer">
     <h2>支出</h2>
-    <form method="POST" action="/demo/hello/public/original/kform/">
+    <form method="POST" action="/demo/hello/public/original/kakeibo_form_insert/">
         <div class="uiForm">
             <div class="formField">
                 <label for="date">日付:</label>
@@ -183,7 +183,7 @@ const App = () => {
 
 <div class="formContainer">
     <h3>収入</h3>
-    <form method="POST" action="/demo/hello/public/original/income_form/">
+    <form method="POST" action="/demo/hello/public/original/income_form_insert/">
         <div class="uiForm">
             <div class="formField">
                 <label for="date2">日付:</label>

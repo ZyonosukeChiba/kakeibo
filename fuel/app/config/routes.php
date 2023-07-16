@@ -40,7 +40,7 @@ return array(
 
 	'hello(/:name)?' => array('welcome/hello', 'name' => 'hello'),
 	
-    'new' => array('original::form3'),
+    'new' => array('original::login'),
 	
 );
 

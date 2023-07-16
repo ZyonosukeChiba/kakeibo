@@ -44,56 +44,53 @@ class Controller_Original extends Controller
     public function before()
     {try {
 
-        if ($this->request->action === 'kform') {
-            $this->before_specific_method();
-        } else if ($this->request->action === 'income_form') {
-            $this->before_specific_method();
+        if ($this->request->action === 'kakeibo_form_insert') {
+            $this->action_authCheck_For_Specific_Methods();
+        } else if ($this->request->action === 'income_form_insert') {
+            $this->action_authCheck_For_Specific_Methods();
         }} catch (Exception $e) {
         // エラーが発生した場合の処理
         $error_code = $e->getCode();
         // リダイレクトを行う
-        Response::redirect('original/form3/', $error_code); // リダイレクト先のURLを指定
+        Response::redirect('original/login/', $error_code); // リダイレクト先のURLを指定
 
     }
     }
-    private function before_specific_method()
+    private function action_authCheck_For_Specific_Methods()
     {
         if (!Auth::check() == 'ture') {
-            Response::redirect('original/form3/');
+            Response::redirect('original/login/');
         }
     }
 
 //初期画面表示
  
-    public function action_chart()
+   
+    public function action_display_kakeibo_chart_data()
     {
-        return View::forge('chart');
+        return View::forge('kakeibo_chart_data');
     }
-    public function action_chart2()
+    public function action_display_income_chart_data()
     {
-        return View::forge('chart2');
+        return View::forge('income_chart_data');
     }
-    public function action_chart3()
-    {
-        return View::forge('chart3');
-    }
-    public function action_c1()
+    public function action_display_chart()
     {
         return View::forge('chart');
     }
     public function action_view()
     {
-        return View::forge('viewtest');
+        return View::forge('main');
     }
 
-    public function action_q()
+    public function action_display_year()
     {
         return View::forge('year');
     }
 
-    public function action_signin()
+    public function action_display_signup()
     {
-        return View::forge('signin');
+        return View::forge('signup');
     }
 
 //emailをセッションに保存
@@ -103,10 +100,10 @@ class Controller_Original extends Controller
         $email = Input::post('email'); // フォームからemailの値を取得
         \Session::set('email', $email);
 
-        return View::forge('viewtest');
+        return View::forge('main');
     }
 
-    public function action_kform()
+    public function action_kakeibo_form_insert()
     {
 
         if (Input::post()) {
@@ -129,11 +126,11 @@ class Controller_Original extends Controller
                 }exit;
             }
         }
-        return View::forge('viewtest');
+        return View::forge('main');
 
     }
 
-    public function action_income_form()
+    public function action_income_form_insert()
     {
 
         if (Input::post()) {
@@ -159,11 +156,11 @@ class Controller_Original extends Controller
             }
         }
 
-        return View::forge('viewtest');
+        return View::forge('main');
 
     }
 
-    public function action_kform2()
+    public function action_kakeibo_form_update()
     {
 
         if (Input::post()) {
@@ -189,10 +186,10 @@ class Controller_Original extends Controller
 
             }
         }
-        return View::forge('viewtest');
+        return View::forge('main');
     }
 
-    public function action_income_form2()
+    public function action_income_form_update()
     {
 
         if (Input::post()) {
@@ -216,10 +213,10 @@ class Controller_Original extends Controller
                 exit;
 
             }
-        }return View::forge('viewtest');
+        }return View::forge('main');
     }
 
-    public function action_auth3()
+    public function action_signup()
     {
         $message = \Session::get_flash('exist_email');
         if ($message) {
@@ -236,7 +233,7 @@ class Controller_Original extends Controller
 
             if ($created) {
                 Auth::login($email, $password);
-                return View::forge('viewtest');
+                return View::forge('main');
             } else {
                 // 登録失敗時の処理
                 echo 'ユーザーの作成に失敗しました';
@@ -245,17 +242,17 @@ class Controller_Original extends Controller
         } else {
             // フォームが送信されていない場合の処理
 
-            return View::forge('signin');
+            return View::forge('signup');
         }
     }
 
-    public function action_month()
+    public function action_select_month()
     {
         \Session::instance()->start();
         $month = Input::post('month');
         \Session::set('month', $month);
 
-        return View::forge('viewtest');
+        return View::forge('main');
     }
     public function action_year()
     {
@@ -266,7 +263,7 @@ class Controller_Original extends Controller
         return View::forge('chart');
     }
 
-    public function action_form3()
+    public function action_login()
     {
         \Session::instance()->start();
         $email = Input::post('email1'); // フォームからemailの値を取得
@@ -274,12 +271,12 @@ class Controller_Original extends Controller
         $password = Input::post('password1');
         if (input::post()) {
             if (Auth::login($email, $password)) {
-                return View::forge('viewtest');} else {
+                return View::forge('main');} else {
                 echo 'ログインできません';
-                return View::forge('login2');
+                return View::forge('login');
             }} else {echo 'フォームを入力してください';}
 
-        return View::forge('login2');
+        return View::forge('login');
         echo 'ポストされていません';
     }
 
@@ -292,7 +289,7 @@ class Controller_Original extends Controller
 
         } else {
             echo 'ログアウトしました。';
-            Response::redirect('original/form3/');
+            Response::redirect('original/login/');
 
         }
     }
@@ -305,10 +302,10 @@ class Controller_Original extends Controller
             ->where('email', '=', $email)
             ->execute();
 
-        Response::redirect('original/form3/');}
+        Response::redirect('original/login/');}
     }
 
-    public function action_delete()
+    public function action_kakeibo_delete()
     {
         if (Input::post()) {
             $deleteId = $_POST['delete_id'];
@@ -316,35 +313,35 @@ class Controller_Original extends Controller
             //     ->where('id', '=', $deleteId)
             //     ->execute();
 
-			    $delete = new Welcome();
+			    $delete = new Model();
                 $delete->delete($deleteId);
 
 
-            return View::forge('viewtest');}
+            return View::forge('main');}
 			 else {
-            return View::forge('viewtest');}
+            return View::forge('main');}
     }
 
-    public function action_delete2()
+    public function action_income_delete()
     {
         if (Input::post()) {
             $deleteId2 = $_POST['delete_id2'];
             // DB::delete('income')
             //     ->where('id', '=', $deleteId2)
             //     ->execute();
-			$delete2 = new Welcome();
+			$delete2 = new Model();
 			$delete2->delete2($deleteId2);
-            return View::forge('viewtest');
+            return View::forge('main');
 		} else {
-            return View::forge('viewtest');
+            return View::forge('main');
         }
     }
 
-    public function action_edit()
+    public function action_display_edit_kakeibo()
     {if (Input::post()) {
         $editid = $_POST['edit_id'];
 // ビューを作成
-        $view = View::forge('edit');
+        $view = View::forge('edit_kakeibo');
 
 // 値をビューに設定
         $view->set('edit_id', $editid);
@@ -353,15 +350,15 @@ class Controller_Original extends Controller
         return $view;
 
     } else {
-        return View::forge('viewtest');
+        return View::forge('main');
     }}
 
-    public function action_edit2()
+    public function action_display_edit_income()
     {
         if (Input::post()) {
             $editid2 = $_POST['edit_id2'];
             // ビューを作成
-            $view = View::forge('edit2');
+            $view = View::forge('edit_income');
 
             // 値をビューに設定
             $view->set('edit_id2', $editid2);

@@ -27,7 +27,7 @@
 
 <div class="formContainer">
     <h2>収入</h2>
-    <form method="POST" action="/demo/hello/public/original/income_form2/">
+    <form method="POST" action="/demo/hello/public/original/income_form_update/">
         <div class="uiForm">
             <div class="formField">
                 <label for="date2">日付:</label>

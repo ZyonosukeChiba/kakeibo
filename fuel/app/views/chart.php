@@ -33,7 +33,7 @@
 
 <script>
      
- fetch('http://localhost:8880/demo/hello/public/original/chart2/')
+ fetch('http://localhost:8880/demo/hello/public/original/display_kakeibo_chart_data')
    
   .then(response => response.json())
   .then(data => {
@@ -66,7 +66,7 @@
     console.error('データの取得に失敗しました:', error);
   });
 
-fetch('http://localhost:8880/demo/hello/public/original/chart3/')
+fetch('http://localhost:8880/demo/hello/public/original/display_income_chart_data')
   .then(response => response.json())
   .then(data2 => {
     console.log(data2);
@@ -85,7 +85,7 @@ fetch('http://localhost:8880/demo/hello/public/original/chart3/')
   });
 
       var date;
- fetch('http://localhost:8880/demo/hello/public/original/q/')
+ fetch('http://localhost:8880/demo/hello/public/original/display_year/')
   .then(response => response.json())
   .then(data => {
     date = data;

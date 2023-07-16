@@ -24,7 +24,7 @@ $result = DB::select('id', 'date', 'title', 'price')
 ?>
 <div class="formContainer">
     <h2>入力内容の変更</h2>
-    <form method="POST" action="/demo/hello/public/original/kform2/">
+    <form method="POST" action="/demo/hello/public/original/kakeibo_form_update/">
         <div class="uiForm">
             <div class="formField">
                 <label for="date">日付:</label>

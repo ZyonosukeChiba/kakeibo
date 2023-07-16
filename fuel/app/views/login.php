@@ -21,7 +21,7 @@ const App = () => {
    return (
     <div>
       <div className="formContainer">
-        <form action="demo/hello/public/original/form3/" method="POST">
+        <form action="demo/hello/public/original/login/" method="POST">
           <h1>ログインフォーム</h1>
           <hr/>
           <div className="uiForm">
@@ -38,8 +38,8 @@ const App = () => {
         </form>
 
       </div>
-      <form method="POST" action="/demo/hello/public/original/auth3/">
-                <button className="sign" type="submit">サインインする</button>
+      <form method="POST" action="/demo/hello/public/original/signup/">
+                <button className="sign" type="submit">サインアップする</button>
                 </form>
     </div>
    )

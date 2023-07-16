@@ -23,7 +23,7 @@
             return (
                 <div>
                     <div class="formContainer">
-                        <form action="demo/hello/public/original/auth3/" method="POST">
+                        <form action="demo/hello/public/original/signup/" method="POST">
                             <h1>新規登録</h1>
                             <hr />
                             <div class="uiForm">
@@ -35,11 +35,11 @@
                                     <label for="password">パスワード:</label>
                                     <input type="password" name="password" id="password" required />
                                 </div>
-                                <button class="submitButton">サインイン</button>
+                                <button class="submitButton">サインアップ</button>
                             </div>
                         </form>
                     </div>
-                    <form method="POST" action="/demo/hello/public/original/form3/">
+                    <form method="POST" action="/demo/hello/public/original/login/">
                         <button className="sign" type="submit">ログイン画面に戻る</button>
                     </form>
 
