@@ -7,6 +7,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 
     <title>カレンダー</title>
@@ -132,39 +134,42 @@
     denyButtonText: "完了"
 }).then(function(result) {
     if (result.isConfirmed)  {
+        if (result.isConfirmed) {
+    // 編集処理
+    Swal.fire({
+        title: 'タスクを編集します',
+        text: "新しいタスクの内容を入力してください:",
+        input: 'text',
+        inputValue: currentTaskContent,
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "更新",
+        closeOnConfirm: false
+    }).then(function(result) {
+        if (!result.isConfirmed) return;
+
+        if (result.value === "") {
+            Swal.showValidationMessage("タスクの内容を入力してください");
+            return;
+        }
+
+        // タスクをviewModel.tasksから見つけて更新
+        const taskDate = taskElement.parentNode.getAttribute('data-date');
+        const taskObj = ko.utils.arrayFirst(viewModel.tasks(), function(task) {
+            return task.date === taskDate && task.task === currentTaskContent;
+        });
+
+        if (taskObj) {
+            taskObj.task = result.value;
+        }
+
+        taskElement.textContent = result.value;
+        Swal.fire("更新完了!", `更新されたタスク: ${result.value}`, "success");
+    });
+}
+}
             // 編集処理
-            swal({
-                title: 'タスクを編集します',
-                text: "新しいタスクの内容を入力してください:",
-                type: "input",
-                inputValue: currentTaskContent,
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "更新",
-                closeOnConfirm: false
-            }).then(function(inputValue) {
-                if (inputValue === false) return;
-
-                if (inputValue === "") {
-                    swal.showInputError("タスクの内容を入力してください");
-                    return;
-                }
-
-                // タスクをviewModel.tasksから見つけて更新
-                const taskDate = taskElement.parentNode.getAttribute('data-date');
-                const taskObj = ko.utils.arrayFirst(viewModel.tasks(), function(task) {
-                    return task.date === taskDate && task.task === currentTaskContent;
-                });
-
-                if (taskObj) {
-                    taskObj.task = inputValue;
-                }
-
-                taskElement.textContent = inputValue;
-                swal("更新完了!", `更新されたタスク: ${inputValue}`, "success");
-            });
-
-        } else if (result.isDenied) {
+           else if (result.isDenied) {
             // 完了処理
             taskElement.style.textDecoration = 'line-through';
             swal("完了！", "タスクが完了しました", "success");
@@ -247,31 +252,78 @@
         }
 
         function onDateClick(event) {
-            const selectedDate = event.target.getAttribute('data-date');
-            if (selectedDate) {
-                Swal.fire({
-    title: 'タスクを追加します',
-    text: "タスクの内容を入力してください:",
-    input: 'text',
-    inputPlaceholder: "タスクの内容",
-    showCancelButton: true,
-    confirmButtonColor: "#DD6B55",
-    confirmButtonText: "OK"
-}).then(function(result) {
-    if (result.isConfirmed && result.value) {
-        if (result.value === "") {
-            Swal.showValidationMessage("タスクの内容を入力してください");
-            return;
-        }
-
-        Swal.fire("追加完了!", `追加されたタスク: ${result.value}`, "success");
-        viewModel.addTask(selectedDate, result.value);
-        createCalendar(currentMonth, currentYear);
-    }
-});
-
+    const selectedDate = event.target.getAttribute('data-date');
+    if (selectedDate) {
+        Swal.fire({
+            title: 'タスクを追加します',
+            text: "タスクの内容を入力してください:",
+            input: 'text',
+            inputPlaceholder: "タスクの内容",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OK"
+        }).then(function(result) {
+            if (result.isConfirmed && result.value) {
+                if (result.value === "") {
+                    Swal.showValidationMessage("タスクの内容を入力してください");
+                    return;
+                }
+                
+                // タスクと日付をサーバに送信
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo Uri::create("1/add"); ?>',
+                    dataType: "json",
+                    data: {
+                        date: selectedDate,
+                        task: result.value
+                    }
+                }).done(function(response) {
+                    // サーバからの応答に基づいて処理
+                    if (response.success) {
+                        Swal.fire("追加完了!", `追加されたタスク: ${result.value}`, "success");
+                        viewModel.addTask(selectedDate, result.value);
+                        createCalendar(currentMonth, currentYear);
+                    } else {
+                        Swal.fire("エラー", "タスクの追加に失敗しました", "error");
+                    }
+                }).fail(function() {
+                    Swal.fire("エラー", "通信エラーが発生しました", "error");
+                });
             }
-        }
+        });
+    }
+}
+
+
+// function onDateClick(event) {
+//             const selectedDate = event.target.getAttribute('data-date');
+//             if (selectedDate) {
+//                 Swal.fire({
+//     title: 'タスクを追加します',
+//     text: "タスクの内容を入力してください:",
+//     input: 'text',
+//     inputPlaceholder: "タスクの内容",
+//     showCancelButton: true,
+//     confirmButtonColor: "#DD6B55",
+//     confirmButtonText: "OK"
+// }).then(function(result) {
+//     if (result.isConfirmed && result.value) {
+//         if (result.value === "") {
+//             Swal.showValidationMessage("タスクの内容を入力してください");
+//             return;
+//         }
+
+//         Swal.fire("追加完了!", `追加されたタスク: ${result.value}`, "success");
+//         viewModel.addTask(selectedDate, result.value);
+//         createCalendar(currentMonth, currentYear);
+//     }
+// });
+
+//             }
+//         }
+
+
 
         document.addEventListener('DOMContentLoaded', function() {
             createCalendar(currentMonth, currentYear);

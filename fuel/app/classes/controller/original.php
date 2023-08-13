@@ -368,6 +368,11 @@ class Controller_Original extends Controller
         }
     }
 
+
+    public function action_view2(){
+        return View::forge('date');
+    }
+
 /**
  * The 404 action for the application.
  *
