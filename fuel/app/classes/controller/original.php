@@ -373,6 +373,7 @@ class Controller_Original extends Controller
         return View::forge('date');
     }
 
+
 /**
  * The 404 action for the application.
  *

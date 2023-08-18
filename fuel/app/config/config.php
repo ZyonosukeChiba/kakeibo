@@ -538,5 +538,6 @@ return array(
 	// ),
 
 	
-	
+'debug' => true,
+
 );
