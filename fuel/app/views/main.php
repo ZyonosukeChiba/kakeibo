@@ -29,8 +29,8 @@
     <button type="submit">グラフを見る</button>
 </form>
 
-<form method="POST" action="/demo/hello/public/original/kakeibo_form_insert/">  
-    <button type="submit">家計簿アプリ</button>
+<form method="POST" action="/demo/hello/public/original/view2/">  
+    <button type="submit">カレンダ-</button>
 </form>
 
 <form method="POST" action="/demo/hello/public/original/logout/">
