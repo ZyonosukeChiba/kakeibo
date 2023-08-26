@@ -59,17 +59,75 @@
 
         .task:hover {
             background-color: #3a8b68; /* ホバー時の背景色 */
+        }
+        .header-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f7f7f7;
+    padding: 10px 0;
 }
+
+.header-buttons form {
+    margin: 0 10px;
+    width:100%;
+}
+
+.header-buttons button {
+    padding: 10px 15px;
+    cursor: pointer;
+    width:100%;
+}
+
         
     </style>
 </head>
 
 <body>
+    <?php 
+    \Session::instance()->start();
+    $email = Session::get('email');
+     if($email != null) {
+         echo $email . 'さんようこそ';
+
+     }
+         ?>
+
+
+
+     
+       <div class="button">
+        <div class="header-buttons">
+
+<form method="POST" action="/demo/hello/public/original/display_chart/">  
+    <button type="submit">グラフを見る</button>
+</form>
+
+<form method="POST" action="/demo/hello/public/original/kakeibo_form_insert/">  
+    <button type="submit">家計簿アプリ</button>
+</form>
+
+<form method="POST" action="/demo/hello/public/original/logout/">
+    <button type="submit">ログアウト</button>
+</form>
+
+<form method="POST" action="/demo/hello/public/original/signout/">
+    <input type="hidden" name="email" value="<?php $email = Session::get('email');
+    echo htmlspecialchars($email); ?>">
+    <button type="submit">退会する</button>
+</form>
+
+</div>
+    </div>
     <div id="calendarControls">
         <button id="lastMonth">前の月</button>
         <button id="nextMonth">次の月</button>
     </div>
     <div id="calendar"></div>
+
+
+
+
 
     <script>
 
@@ -90,7 +148,7 @@
                     id: id,
                     date: date,
                     task: task,
-                    done:done
+                    
                 });
             };
            
@@ -168,6 +226,9 @@
                         tasksForDate.forEach(task => {
                         const taskElement = document.createElement('div');
                         taskElement.textContent = task.task;
+
+
+
                         taskElement.classList.add('task');
                         taskElement.setAttribute('data-task-id', task.id);
                         taskElement.addEventListener('click', onTaskClick);
@@ -260,6 +321,9 @@
             createCalendar(currentMonth, currentYear);
         }
 
+
+       
+
  
 
 
@@ -276,7 +340,7 @@ const taskId = taskElement.getAttribute('data-task-id');
 Swal.fire({
     title: 'タスクの操作を選択',
     text: "どの操作を行いますか？",
-    icon: "warning",
+    // icon: "warning",
     showCancelButton: true,
     showCloseButton: true,
     confirmButtonColor: "#DD6B55",
@@ -399,10 +463,13 @@ function deleteTask() {
 document.querySelectorAll('.task').forEach(task => {
     task.addEventListener('click', onTaskClick);
 });
+
+
          
 
             document.addEventListener('DOMContentLoaded', function() {
                 viewModel.loadTasksFromServer(); // サーバからタスクを読み込む
+               
                 const nextMonthButton = document.getElementById('nextMonth');
                 nextMonthButton.addEventListener('click', goToNextMonth);
                 const lastMonthButton = document.getElementById('lastMonth');
@@ -413,10 +480,10 @@ document.querySelectorAll('.task').forEach(task => {
                 
 
     </script>
-    <?php 
-           
-       
-    ?> 
+
+
+
+
 </body>
 
 </html>

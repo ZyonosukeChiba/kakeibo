@@ -9,6 +9,25 @@ body {
     background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#22c1c3",endColorstr="#fdbb2d",GradientType=1);
 }
+.header-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7f7f7;
+  padding: 10px 0;
+}
+
+.header-buttons form {
+  margin: 0 10px;
+  width:100%;
+}
+
+.header-buttons button {
+  padding: 10px 15px;
+  cursor: pointer;
+ 
+}
+
 
 
 

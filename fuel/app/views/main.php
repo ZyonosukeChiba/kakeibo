@@ -23,22 +23,28 @@
     
         <h1>家計簿アプリ</h1>
         <div class="button">
-            
-                <form method="POST" action="/demo/hello/public/original/display_chart/">  
-                <button type="submit">グラフを見る</button>
-                </form>
-        
 
-                <form method="POST" action="/demo/hello/public/original/logout/">
-                <button type="submit">ログアウト</button>
-                </form>
+    <form method="POST" action="/demo/hello/public/original/display_chart/">  
+        <button type="submit">グラフを見る</button>
+    </form>
 
-        
-                <form method="POST" action="/demo/hello/public/original/signout/">
-                <input type="hidden" name="email" value="<?php $email = Session::get('email');
-                echo htmlspecialchars($email); ?>">
-                   <button type="submit">退会する</button>
-                </form>
+    <form method="POST" action="/demo/hello/public/original/view2/">  
+        <button type="submit">カレンダー</button>
+    </form>
+
+    
+    <form method="POST" action="/demo/hello/public/original/logout/">
+        <button type="submit">ログアウト</button>
+    </form>
+
+    <form method="POST" action="/demo/hello/public/original/signout/">
+        <input type="hidden" name="email" value="<?php $email = Session::get('email');
+        echo htmlspecialchars($email); ?>">
+        <button type="submit">退会する</button>
+    </form>
+
+</div>
+
 
          </form>
          </div>

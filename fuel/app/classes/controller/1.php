@@ -36,7 +36,7 @@
                 // POSTデータの取得
                 $date = Input::post('date');
                 $task_content = Input::post('task');
-    
+                $email = Session::get('email');
                 // データのバリデーション (簡易的に)
                 if (empty($date) || empty($task_content)) {
                     throw new Exception("データが不足しています");
@@ -44,7 +44,9 @@
 
                 \DB::insert('tasks')->set(array(
                     'date' => $date,
-                    'task' => $task_content
+                    'task' => $task_content,
+                    'email'=>$email
+
                 ))->execute();
 
             
@@ -63,9 +65,14 @@
   
     public function get_tasks()
     {
+        $email = Session::get('email');
         try {
             // tasksテーブルから全てのデータを取得
-            $tasks = \DB::select()->from('tasks')->execute()->as_array();
+            $tasks = \DB::select()
+            ->from('tasks')
+            ->where('email', '=',$email)
+            ->execute()
+            ->as_array();
             
             // 成功したレスポンスを返す
             return $this->response(['success' => true, 'tasks' => $tasks], 200);
@@ -75,20 +82,36 @@
         }
     }
 
+
+public function get_payment(){
+    $email = Session::get('email');
+    $result = DB::select('id', 'date', 'title', 'price')
+    ->from('kaeibo')
+    ->where('email', '=', $email)
+    ->execute()
+    ->as_array();
+      // 成功したレスポンスを返す
+      return $this->response(['success' => true, 'result' => $result], 200);
+  
+
+}
+
+   
+
     public function put_update()
 {
     try {
         // クライアントから送られてくるデータを取得
         $id = Input::put('id');
         $newTask = Input::put('newTask');
-       
-
+        $email = Session::get('email');
 
 
         // tasksテーブルから指定されたIDのタスクを更新
         \DB::update('tasks')
             ->set(['task' => $newTask])
             ->where('id', '=',  $id)
+            ->where('email', '=',$email)
             ->execute();
 
        // 成功したレスポンスを返す
@@ -103,10 +126,6 @@
     try {
         // クライアントから送られてくるデータを取得
         $id = Input::put('id');
-        $newTask = Input::put('newTask');
-       
-
-
 
         // tasksテーブルから指定されたIDのタスクを更新
         \DB::update('tasks')
