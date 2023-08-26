@@ -30,7 +30,7 @@
 </form>
 
 <form method="POST" action="/demo/hello/public/original/view2/">  
-    <button type="submit">カレンダ-</button>
+    <button type="submit">カレンダー</button>
 </form>
 
 <form method="POST" action="/demo/hello/public/original/logout/">
