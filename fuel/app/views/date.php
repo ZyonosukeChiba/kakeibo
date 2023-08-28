@@ -150,6 +150,7 @@
                     task: task,
                     
                 });
+                // console.log(task);
             };
            
 
@@ -227,7 +228,7 @@
                         const taskElement = document.createElement('div');
                         taskElement.textContent = task.task;
 
-
+console.log(task);
 
                         taskElement.classList.add('task');
                         taskElement.setAttribute('data-task-id', task.id);
