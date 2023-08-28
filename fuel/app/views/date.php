@@ -79,31 +79,31 @@
     width:100%;
 }
 
-        
+
     </style>
 </head>
 
 <body>
-    <?php 
-    \Session::instance()->start();
-    $email = Session::get('email');
-     if($email != null) {
-         echo $email . 'さんようこそ';
+    <?php
+\Session::instance()->start();
+$email = Session::get('email');
+if ($email != null) {
+    echo $email . 'さんようこそ';
 
-     }
-         ?>
+}
+?>
 
 
 
-     
+
        <div class="button">
         <div class="header-buttons">
 
-<form method="POST" action="/demo/hello/public/original/display_chart/">  
+<form method="POST" action="/demo/hello/public/original/display_chart/">
     <button type="submit">グラフを見る</button>
 </form>
 
-<form method="POST" action="/demo/hello/public/original/kakeibo_form_insert/">  
+<form method="POST" action="/demo/hello/public/original/kakeibo_form_insert/">
     <button type="submit">家計簿アプリ</button>
 </form>
 
@@ -113,7 +113,7 @@
 
 <form method="POST" action="/demo/hello/public/original/signout/">
     <input type="hidden" name="email" value="<?php $email = Session::get('email');
-    echo htmlspecialchars($email); ?>">
+echo htmlspecialchars($email);?>">
     <button type="submit">退会する</button>
 </form>
 
@@ -140,52 +140,105 @@
         //knockout.jsでデータとUIの関連を助ける
         function CalendarViewModel() {
             const self = this;
-
+            // タスク情報を保持するためのObservableArray（観測可能な配列）を作成しています。ObservableArrayは、要素が変更されると自動的にUIに反映される配列です。
             self.tasks = ko.observableArray([]);
-
-            self.addTask = function(id,date, task,done) {
+            // : タスクを追加するための関数です。新しいタスクをself.tasksに追加します。
+            self.addTask = function(id,date, task) {
                 self.tasks.push({
                     id: id,
                     date: date,
                     task: task,
-                    
+
                 });
             };
-           
 
+            // 指定された日付に対応するタスクを取得するための関数です。日付を指定して該当するタスクをフィルタリングして返します。
             self.getTasksForDate = function(date) {
                 return ko.utils.arrayFilter(self.tasks(), function(task) {
                     return task.date === date;
+                    // console.log(data);
                 });
             };
-
+                // サーバーからデータを取得
             self.loadTasksFromServer = function() {
                 $.ajax({
                     type: "GET",
-                    url: '<?php echo '/'.\Uri::segment_replace('demo/hello/public/1/tasks');?>',
+                    url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/tasks'); ?>',
                     dataType: "json"
                 }).done(function(response) {
-                   
+
                     if (response.success) {
                         const tasksFromServer = response.tasks;
                         tasksFromServer.forEach(function(task) {
+                            // console.log(task);
                             let dateR =task.date ;
                             let formattedDate = dateR.replace(/\b0+/g, '');
-                            // self.addTask(task.id,formattedDate, task.task);
-                            self.addTask(task.id, formattedDate, task.task, task.done === 1);
-                          
-                            
+                            self.addTask(task.id,formattedDate, task.task);
+
+
+
                         });
                         createCalendar(currentMonth, currentYear);
-                       
+
 
                     }
                 }).fail(function() {
                     Swal.fire("エラー", "タスクの読み込みに失敗しました", "error");
                 });
                 };
+
+//price
+self.items = ko.observableArray([]);
+
+self.addProce = function(id, date, price) {
+    self.items.push({
+        id: id,
+        date: date,
+        price: price
+    });
+};
+
+self.getPricesForDate = function(date) {
+    return ko.utils.arrayFilter(self.items(), function(item) {
+        return item.date === date;
+    });
+};
+
+self.loadPriceFromServer = function() {
+    $.ajax({
+        type: "GET",
+        url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/payment'); ?>',
+        dataType: "json"
+    }).done(function(response) {
+        if (response.success) {
+            const priceFromServer = response.result;
+            priceFromServer.forEach(function(item) {
+                let date3 = item.date;
+                let formattedDate3 = date3.replace(/\b0+/g, '');
+                console.log(formattedDate3); // 正しい変数名でログを出力
+                self.addProce(item.id, formattedDate3, item.price);
+
+
+            });
+            createCalendar(currentMonth, currentYear);
         }
-        
+    }).fail(function() {
+        Swal.fire("エラー", "価格情報の読み込みに失敗しました", "error");
+    });
+};
+
+
+
+
+
+
+
+        }
+
+
+
+
+
 
 
            //カレンダーを作る
@@ -222,19 +275,35 @@
                         cell.textContent = '';
                     } else {
                         cell.textContent = dayCount;
+//                         viewModel.getTasksForDate を使用して、現在のセルに対応する日付のタスク情報を取得します。
+// 取得したタスク情報をループして、それぞれのタスクを div 要素として作成します。タスク内容は taskElement.textContent に設定されます。
+// タスクの要素に必要なクラスと属性を追加し、クリックイベントリスナーを設定します。これにより、タスクをクリックしたときに適切な処理が実行されます。
+
                         const tasksForDate = viewModel.getTasksForDate(`${year}-${month + 1}-${dayCount}`);
+                        //priceここから
+                        const dateStr = `${year}-${month + 1}-${dayCount}`;
+                        const pricesForDate = viewModel.prices().filter(price => price.date === dateStr);
+                        // console.log(price.date);
+
+                        pricesForDate.forEach(price => {
+                        const priceElement = document.createElement('div');
+                        priceElement.textContent = price.price;
+
+                        priceElement.classList.add('price');
+                        cell.appendChild(priceElement);});
+                        //priceここまで
                         tasksForDate.forEach(task => {
                         const taskElement = document.createElement('div');
                         taskElement.textContent = task.task;
 
-
+console.log(task);
 
                         taskElement.classList.add('task');
                         taskElement.setAttribute('data-task-id', task.id);
                         taskElement.addEventListener('click', onTaskClick);
                         cell.appendChild(taskElement);
-                        
-                    
+
+
                         });
 
                         cell.setAttribute('data-date', `${year}-${month + 1}-${dayCount}`);
@@ -248,7 +317,7 @@
 
             table.appendChild(tbody);
             calendar.appendChild(table);
-           
+
         }
 
 
@@ -270,11 +339,11 @@
                     Swal.showValidationMessage("タスクの内容を入力してください");
                     return;
                 }
-                
+
                 // タスクと日付をサーバに送信
             $.ajax({
                 type: "POST",
-                url: '<?php echo '/'.\Uri::segment_replace('demo/hello/public/1/add');?>',
+                url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/add'); ?>',
                 dataType: "json",
                 data: {
                     date: selectedDate,
@@ -285,8 +354,8 @@
                 if (response.success) {
                     Swal.fire("追加完了!", `追加されたタスク: ${result.value}`, "success");
                     viewModel.addTask(response.id, selectedDate, result.value);
-                    createCalendar(currentMonth, currentYear); 
-                   
+                    createCalendar(currentMonth, currentYear);
+
                 } else {
                     Swal.fire("エラー", "タスクの追加に失敗しました", "error");
                 }
@@ -297,9 +366,9 @@
                 });
             }
         }
-    
 
-      
+
+
         //次の月
         function goToNextMonth() {
             if (currentMonth === 11) {
@@ -322,9 +391,9 @@
         }
 
 
-       
 
- 
+
+
 
 
 
@@ -334,7 +403,7 @@ function onTaskClick(event) {
 
 const taskElement = event.target;
 const currentTaskContent = taskElement.textContent;
-const taskId = taskElement.getAttribute('data-task-id'); 
+const taskId = taskElement.getAttribute('data-task-id');
 
 // swalで操作の選択
 Swal.fire({
@@ -391,7 +460,7 @@ function editTask() {
         if (taskObj) {
             $.ajax({
                 type: 'PUT',
-                url: '<?php echo "/".\Uri::segment_replace("demo/hello/public/1/update"); ?>',
+                url: '<?php echo "/" . \Uri::segment_replace("demo/hello/public/1/update"); ?>',
                 dataType: "json",
                 data: {
                     id: taskId,
@@ -416,11 +485,11 @@ function completeTask() {
  {
             $.ajax({
                 type: 'PUT',
-                url: '<?php echo "/".\Uri::segment_replace("demo/hello/public/1/done"); ?>',
+                url: '<?php echo "/" . \Uri::segment_replace("demo/hello/public/1/done"); ?>',
                 dataType: "json",
                 data: {
                     id: taskId,
-                   
+
                 },
                 success: function(response) {
                     Swal.fire("完了!", "タスクが完了しました", "success");
@@ -434,16 +503,16 @@ function completeTask() {
 
 function deleteTask() {
     const taskDate = taskElement.parentNode.getAttribute('data-date');
-    
+
     viewModel.tasks.remove(function(task) {
         return task.date === taskDate && task.task === currentTaskContent;
     });
-    
+
     taskElement.remove();
-    
+
     $.ajax({
         type: 'DELETE',
-        url: '<?php echo "/".\Uri::segment_replace("demo/hello/public/1/deletetask"); ?>',
+        url: '<?php echo "/" . \Uri::segment_replace("demo/hello/public/1/deletetask"); ?>',
         dataType: "json",
         data: {
             id: taskId
@@ -465,11 +534,11 @@ document.querySelectorAll('.task').forEach(task => {
 });
 
 
-         
+
 
             document.addEventListener('DOMContentLoaded', function() {
                 viewModel.loadTasksFromServer(); // サーバからタスクを読み込む
-               
+                viewModel.loadPriceFromServer(); // サーバから支払いを読み込み
                 const nextMonthButton = document.getElementById('nextMonth');
                 nextMonthButton.addEventListener('click', goToNextMonth);
                 const lastMonthButton = document.getElementById('lastMonth');
@@ -477,7 +546,7 @@ document.querySelectorAll('.task').forEach(task => {
                 });
 
 
-                
+
 
     </script>
 
