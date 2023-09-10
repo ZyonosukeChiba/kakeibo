@@ -37,11 +37,7 @@
     <button type="submit">ログアウト</button>
 </form>
 
-<form method="POST" action="/demo/hello/public/original/signout/">
-    <input type="hidden" name="email" value="<?php $email = Session::get('email');
-    echo htmlspecialchars($email); ?>">
-    <button type="submit">退会する</button>
-</form>
+
 
 </div>
     </div>
@@ -55,7 +51,7 @@
 <p>月ごとの収支を見る</p>
 <form method="POST" action="/demo/hello/public/original/select_month/">
     <input type="month" name="month" id="month">
-    <button type="submit">送信</button>
+    <button type="submit" style="width:100px;">送信</button>
 </form>
 
 <?php 
@@ -216,6 +212,10 @@ root.render(<App />);
 </script>
 
 
-
+<form method="POST" action="/demo/hello/public/original/signout/">
+    <input type="hidden" name="email" value="<?php $email = Session::get('email');
+    echo htmlspecialchars($email); ?>">
+    <button type="submit" style="max-width:200px;">退会する</button>
+</form>
 </body>
 </html>

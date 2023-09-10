@@ -90,11 +90,13 @@ public function get_payment(){
     ->where('email', '=', $email)
     ->execute()
     ->as_array();
-      // 成功したレスポンスを返す
+
+   
       return $this->response(['success' => true, 'result' => $result], 200);
+    }
   
 
-}
+
 
    
 
@@ -159,14 +161,159 @@ public function delete_deletetask()
     }
 }
 
+public function post_add2()
+        {
+            $response = ['success' => false];
+    
+            try {
+                // POSTデータの取得
+                $date = Input::post('date');
+                $task_content = Input::post('task');
+                $email = Session::get('other_email');
+                // データのバリデーション (簡易的に)
+                if (empty($date) || empty($task_content)) {
+                    throw new Exception("データが不足しています");
+                }
+
+                \DB::insert('tasks')->set(array(
+                    'date' => $date,
+                    'task' => $task_content,
+                    'email'=>$email
+
+                ))->execute();
+
+            
+
+                $response['success'] = true;
+    
+            } catch (Exception $e) {
+                // エラーメッセージの設定
+                $response['error_message'] = $e->getMessage();
+            }
+    
+            // JSONレスポンスを返す
+            return $this->response($response, ($response['success'] ? 200 : 500));
+            
+        }
+  
+    public function get_tasks2()
+    {
+        $email = Session::get('other_email');
+        try {
+            // tasksテーブルから全てのデータを取得
+            $tasks = \DB::select()
+            ->from('tasks')
+            ->where('email', '=',$email)
+            ->execute()
+            ->as_array();
+            
+            // 成功したレスポンスを返す
+            return $this->response(['success' => true, 'tasks' => $tasks], 200);
+        } catch (\Exception $e) {
+            // エラーメッセージを設定し、エラーレスポンスを返す
+            return $this->response(['success' => false, 'error_message' => $e->getMessage()], 500);
+        }
+    }
 
 
+public function get_payment2(){
+    $email = Session::get('other_email');
+    $result = DB::select('id', 'date', 'title', 'price')
+    ->from('kaeibo')
+    ->where('email', '=', $email)
+    ->execute()
+    ->as_array();
+
+   
+      return $this->response(['success' => true, 'result' => $result], 200);
+    }
+  
+
+
+
+   
+
+    public function put_update2()
+{
+    try {
+        // クライアントから送られてくるデータを取得
+        $id = Input::put('id');
+        $newTask = Input::put('newTask');
+        $email = Session::get('other_email');
+
+
+        // tasksテーブルから指定されたIDのタスクを更新
+        \DB::update('tasks')
+            ->set(['task' => $newTask])
+            ->where('id', '=',  $id)
+            ->where('email', '=',$email)
+            ->execute();
+
+       // 成功したレスポンスを返す
+        return $this->response(['success' => true], 200);
+    } catch (\Exception $e) {
+        // エラーメッセージを設定し、エラーレスポンスを返す
+        return $this->response(['success' => false, 'error_message' => $e->getMessage()], 500);
+    }
+}
+    public function put_done2()
+{
+    try {
+        // クライアントから送られてくるデータを取得
+        $id = Input::put('id');
+
+        // tasksテーブルから指定されたIDのタスクを更新
+        \DB::update('tasks')
+            ->set(['done' => '1'])
+            ->where('id', '=',  $id)
+            ->execute();
+
+       // 成功したレスポンスを返す
+        return $this->response(['success' => true], 200);
+    } catch (\Exception $e) {
+        // エラーメッセージを設定し、エラーレスポンスを返す
+        return $this->response(['success' => false, 'error_message' => $e->getMessage()], 500);
+    }
+}
+
+public function delete_deletetask2()
+{
+    try {
+        // クライアントから送られてくるデータを削除
+        $id = Input::delete('id');
+        // tasksテーブルから指定されたIDのタスクを削除
+        \DB::delete('tasks')
+            ->where('id', '=',  $id)
+            ->execute();
+
+       // 成功したレスポンスを返す
+        return $this->response(['success' => true], 200);
+    } catch (\Exception $e) {
+        // エラーメッセージを設定し、エラーレスポンスを返す
+        return $this->response(['success' => false, 'error_message' => $e->getMessage()], 500);
+    }
+}
+
+public function put_createGroup()
+{
+    try {
+        $group = Input::put('group');
+        $email = Session::get('email');
+
+ // tasksテーブルから指定されたIDのタスクを更新
+ \DB::update('users')
+ ->set(['group' => $group])
+ ->where('email', '=',$email)
+ ->execute();
+ return $this->response(['success' => true], 200);
+    }catch (\Exception $e) {
+        // エラーメッセージを設定し、エラーレスポンスを返す
+        return $this->response(['success' => false, 'error_message' => $e->getMessage()], 500);
+    }
 
     }
     
-
-    
-    
+}
 
  
      

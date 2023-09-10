@@ -85,14 +85,7 @@
 </head>
 
 <body>
-    <?php
-\Session::instance()->start();
-$email = Session::get('email');
-if ($email != null) {
-    echo $email . 'さんようこそ';
-
-}
-?>
+ 
 
 
 
@@ -100,43 +93,26 @@ if ($email != null) {
        <div class="button">
         <div class="header-buttons">
 
-<form method="POST" action="/demo/hello/public/original/display_chart/">
-    <button type="submit">グラフを見る</button>
-</form>
+
 
 <form method="POST" action="/demo/hello/public/original/kakeibo_form_insert/">
     <button type="submit">家計簿アプリ</button>
 </form>
-
-<form method="POST" action="/demo/hello/public/original/logout/">
-    <button type="submit">ログアウト</button>
+<form method="POST" action="/demo/hello/public/original/view2/">  
+    <button type="submit">自分のカレンダーに戻る</button>
 </form>
-<!-- <form method="POST" action="/demo/hello/public/original/see_others/">
-    <button type="submit">他の人のカレンダーを見る</button>
-</form> -->
-
-
 
 
 
 </div>
     </div>
-    
-
-<div>
-    <button id="createGroup">グループを作る</button>
-    <form method="post" action="/demo/hello/public/original/view3/">
-    <button  type="submit">他の人のカレンダーを見る</button>
-</form>
-</div>
-
-<div id="calendarControls">
+    <div id="calendarControls">
         <button id="lastMonth">前の月</button>
         <button id="nextMonth">次の月</button>
     </div>
-
-
     <div id="calendar"></div>
+    <div id="buttonContainer"></div>
+    <div id="commentContainer"></div>
 
 
 
@@ -163,7 +139,7 @@ if ($email != null) {
                     task: task,
 
                 });
-                console.log("Added Tasks:", id, date, task);
+          
             };
 
             // 指定された日付に対応するタスクを取得するための関数です。日付を指定して該当するタスクをフィルタリングして返します。
@@ -177,7 +153,7 @@ if ($email != null) {
             self.loadTasksFromServer = function() {
                 $.ajax({
                     type: "GET",
-                    url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/tasks'); ?>',
+                    url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/tasks2'); ?>',
                     dataType: "json"
                 }).done(function(response) {
 
@@ -223,7 +199,7 @@ self.getPricesForDate = function(date) {
 self.loadPriceFromServer = function() {
     $.ajax({
         type: "GET",
-        url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/payment'); ?>',
+        url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/payment2'); ?>',
         dataType: "json"
     }).done(function(response) {
         if (response.success) {
@@ -262,14 +238,6 @@ self.calculateTotalPriceForDate = function(date) {
 
 
 
-
-
-
-//                         viewModel.getTasksForDate を使用して、現在のセルに対応する日付のタスク情報を取得します。
-// 取得したタスク情報をループして、それぞれのタスクを div 要素として作成します。タスク内容は taskElement.textContent に設定されます。
-// タスクの要素に必要なクラスと属性を追加し、クリックイベントリスナーを設定します。これにより、タスクをクリックしたときに適切な処理が実行されます。
-
-       
         // カレンダーの作成
 function createCalendar(month, year) {
     const calendar = document.getElementById('calendar');
@@ -312,7 +280,7 @@ function createCalendar(month, year) {
                     taskElement.textContent = task.task;
                     taskElement.classList.add('task');
                     taskElement.setAttribute('data-task-id', task.id);
-                    taskElement.addEventListener('click', onTaskClick);
+                    // taskElement.addEventListener('click', onTaskClick);
                     cell.appendChild(taskElement);
                 });
 
@@ -330,7 +298,7 @@ function createCalendar(month, year) {
                 cell.appendChild(priceElement);
 
                 cell.setAttribute('data-date', `${year}-${month + 1}-${dayCount}`);
-                cell.addEventListener('click', onDateClick);
+                // cell.addEventListener('click', onDateClick);
                 dayCount++;
             }
             row.appendChild(cell);
@@ -343,57 +311,6 @@ function createCalendar(month, year) {
 }
 
 
-
-
-
-
-
-
-        //タスクの追加
-        function onDateClick(event) {
-            const selectedDate = event.target.getAttribute('data-date');
-            if (selectedDate) {
-            Swal.fire({
-            title: 'タスクを追加します',
-            text: "タスクの内容を入力してください:",
-            input: 'text',
-            inputPlaceholder: "タスクの内容",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "OK"
-            }).then(function(result) {
-            if (result.isConfirmed && result.value) {
-                if (result.value === "") {
-                    Swal.showValidationMessage("タスクの内容を入力してください");
-                    return;
-                }
-
-                // タスクと日付をサーバに送信
-            $.ajax({
-                type: "POST",
-                url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/add'); ?>',
-                dataType: "json",
-                data: {
-                    date: selectedDate,
-                    task: result.value
-                }
-            }).done(function(response) {
-                // サーバからの応答に基づいて処理
-                if (response.success) {
-                    Swal.fire("追加完了!", `追加されたタスク: ${result.value}`, "success");
-                    viewModel.addTask(response.id, selectedDate, result.value);
-                    createCalendar(currentMonth, currentYear);
-
-                } else {
-                    Swal.fire("エラー", "タスクの追加に失敗しました", "error");
-                }
-                }).fail(function() {
-            Swal.fire("エラー", "通信エラーが発生しました", "error");
-                });
-                    }
-                });
-            }
-        }
 
 
 
@@ -418,195 +335,55 @@ function createCalendar(month, year) {
             createCalendar(currentMonth, currentYear);
         }
 
-
-        function createGroup() {
-    Swal.fire({
-        title: 'グループを作成',
-        text: "グループ名を入力してくだいさい:",
-        input: 'text',
-        inputPlaceholder: "グループ名",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "OK"
-    }).then(function(result) {
-        if (result.isConfirmed && result.value) {
-            if (result.value === "") {
-                Swal.showValidationMessage("グループ名を入力してくだいさい");
-                return;
+        function createButton() {
+    // ボタンを作成
+    const button = document.createElement("button");
+    button.innerHTML = "コメントする";
+    button.id = "customButton";
+    
+    // ボタンがクリックされた時のイベントを追加
+    button.addEventListener('click', function() {
+        Swal.fire({
+            title: 'コメントする',
+            text: "コメントの内容を入力してください:",
+            input: 'text',
+            inputPlaceholder: "コメントの内容",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OK"
+        }).then((result) => {
+            if (result.isConfirmed && result.value) {
+                // コメントを表示するための領域に入力されたコメントを追加
+                const commentContainer = document.getElementById('commentContainer');
+                const newComment = document.createElement('p');
+                newComment.innerText = result.value;
+                commentContainer.appendChild(newComment);
             }
-
-            $.ajax({
-                type: "PUT",
-                url: '<?php echo "/" . \Uri::segment_replace("demo/hello/public/1/createGroup"); ?>',
-                dataType: "json",
-                data: {
-                    group: result.value
-                }
-            }).done(function(response) {
-                // サーバからの応答に基づいて処理
-                if (response.success) {
-                    Swal.fire("作成完了!", `グループ名: ${result.value}`, "success");
-                } else {
-                    Swal.fire("エラー", "グループの作成に失敗しました", "error");
-                }
-            }).fail(function() {
-                Swal.fire("エラー", "通信エラーが発生しました", "error");
-            });
-        }
-    });
-}
-
-
-
-
-// タスクの操作
-function onTaskClick(event) {
-
-const taskElement = event.target;
-const currentTaskContent = taskElement.textContent;
-const taskId = taskElement.getAttribute('data-task-id');
-
-// swalで操作の選択
-Swal.fire({
-    title: 'タスクの操作を選択',
-    text: "どの操作を行いますか？",
-    // icon: "warning",
-    showCancelButton: true,
-    showCloseButton: true,
-    confirmButtonColor: "#DD6B55",
-    confirmButtonText: "編集",
-    cancelButtonText: "削除",
-    // showDenyButton: true,
-    // denyButtonText: "完了"
-}).then(function(result) {
-    if (result.isConfirmed) {
-        // 編集処理
-        editTask();
-    } else if (result.isDenied) {
-        // 完了処理
-        completeTask();
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // 削除処理
-        deleteTask();
-    }
-});
-
-function editTask() {
-    Swal.fire({
-        title: 'タスクを編集します',
-        text: "新しいタスクの内容を入力してください:",
-        input: 'text',
-        inputValue: currentTaskContent,
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "更新",
-        closeOnConfirm: false
-    }).then(function(result) {
-        if (!result.isConfirmed) return;
-
-        if (result.value === "") {
-            Swal.fire({
-                icon: 'error',
-                title: 'エラー',
-                text: 'タスクの内容を入力してください'
-            });
-            return;
-        }
-
-        const taskDate = taskElement.parentNode.getAttribute('data-date');
-        const taskObj = ko.utils.arrayFirst(viewModel.tasks(), function(task) {
-            return task.date === taskDate && task.task === currentTaskContent;
         });
-
-        if (taskObj) {
-            $.ajax({
-                type: 'PUT',
-                url: '<?php echo "/" . \Uri::segment_replace("demo/hello/public/1/update"); ?>',
-                dataType: "json",
-                data: {
-                    id: taskId,
-                    newTask: result.value
-                },
-                success: function(response) {
-                    taskObj.task = result.value;
-                    taskElement.textContent = result.value;
-                    Swal.fire("更新完了!", `更新されたタスク: ${result.value}`, "success");
-                },
-                error: function(error) {
-                    Swal.fire("更新失敗", "タスクの更新に失敗しました", "error");
-                }
-            });
-        }
-    });
-}
-
-function completeTask() {
-    taskElement.style.textDecoration = 'line-through';
-    // Swal.fire("完了！", "タスクが完了しました", "success");
- {
-            $.ajax({
-                type: 'PUT',
-                url: '<?php echo "/" . \Uri::segment_replace("demo/hello/public/1/done"); ?>',
-                dataType: "json",
-                data: {
-                    id: taskId,
-
-                },
-                success: function(response) {
-                    Swal.fire("完了!", "タスクが完了しました", "success");
-                },
-                error: function(error) {
-                    Swal.fire("更新失敗", "更新に失敗しました", "error");
-                }
-            });
-        }
-}
-
-function deleteTask() {
-    const taskDate = taskElement.parentNode.getAttribute('data-date');
-
-    viewModel.tasks.remove(function(task) {
-        return task.date === taskDate && task.task === currentTaskContent;
     });
 
-    taskElement.remove();
-
-    $.ajax({
-        type: 'DELETE',
-        url: '<?php echo "/" . \Uri::segment_replace("demo/hello/public/1/deletetask"); ?>',
-        dataType: "json",
-        data: {
-            id: taskId
-        },
-        success: function(response) {
-            Swal.fire("削除完了!", "タスクが削除されました", "success");
-        },
-        error: function(error) {
-            Swal.fire("削除失敗", "タスクの削除に失敗しました", "error");
-        }
-    });
-}
+    // カレンダーの下のbuttonContainerにボタンを追加
+    const buttonContainer = document.getElementById('buttonContainer');
+    buttonContainer.appendChild(button);
 }
 
 
-// イベントリスナーを設定
-document.querySelectorAll('.task').forEach(task => {
-    task.addEventListener('click', onTaskClick);
-});
+
+
+
 
 
 
 
             document.addEventListener('DOMContentLoaded', function() {
+            
                 viewModel.loadTasksFromServer(); // サーバからタスクを読み込む
                 viewModel.loadPriceFromServer(); // サーバから支払いを読み込み
                 const nextMonthButton = document.getElementById('nextMonth');
                 nextMonthButton.addEventListener('click', goToNextMonth);
                 const lastMonthButton = document.getElementById('lastMonth');
                 lastMonthButton.addEventListener('click', goToLastMonth);
-                const createGroupButton = document.getElementById('createGroup');
-                createGroupButton.addEventListener('click', createGroup);
-                
+                createButton(); 
                 });
 
 
@@ -615,13 +392,7 @@ document.querySelectorAll('.task').forEach(task => {
     </script>
 
 
-
-<form method="POST" action="/demo/hello/public/original/signout/">
-    <input type="hidden" name="email" value="<?php $email = Session::get('email');
-echo htmlspecialchars($email);?>">
-    <button type="submit" style="width:200px; margin-top: 100px;">退会する</button>
 </form>
-
 
 </body>
 

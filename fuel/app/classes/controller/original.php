@@ -367,12 +367,81 @@ class Controller_Original extends Controller
             return $view;
         }
     }
-
-
     public function action_view2(){
-        return View::forge('date');
+         
+        $view=View::forge('date');
+ 
+        return $view;
     }
 
+
+    public function action_view3(){
+        \Session::instance()->start();
+            $email = Session::get('email');
+            $group = \DB::select()
+            ->from('users')
+            ->where('email', '=',$email)
+            ->execute()
+            ->get('group');
+   
+       
+   
+            $group_member=\DB::select('email')
+            ->from('users')
+            ->where('group','=',$group)
+            ->execute()
+            ->as_array();
+   
+            
+           
+           $view=View::forge('date2');
+          $view->set('group_member',$group_member);
+          return $view;
+      
+    }
+
+
+
+    public function action_see_others() {
+        // Input::post('email')でemailというキーのPOSTデータを取得
+        $other_email = Input::post('email');
+        \log::error($other_email);
+        // $other_email='113zyooo@icloud.com';
+        // 取得した$other_emailをビューに渡す
+        \Session::instance()->start();
+        \Session::set('other_email', $other_email);
+        return View::forge('date_others');
+        
+    }
+    
+
+    // public function action_see_others(){
+    //     \Session::instance()->start();
+    //      $email = Session::get('email');
+    //      $group = \DB::select()
+    //      ->from('users')
+    //      ->where('email', '=',$email)
+    //      ->execute()
+    //      ->get('group');
+
+    
+
+    //      $group_member=\DB::select('email')
+    //      ->from('users')
+    //      ->where('group','=',$group)
+    //      ->execute()
+    //      ->as_array();
+
+         
+        
+    //     $view=View::forge('select');
+    //    $view->set('group_member',$group_member);
+    //    return $view;
+    // }
+
+
+
+    
 
 /**
  * The 404 action for the application.
