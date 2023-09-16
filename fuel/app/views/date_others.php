@@ -86,7 +86,13 @@
 
 <body>
  
-
+<?php 
+\Session::instance()->start();
+$email = Session::get('email');
+      echo $other_email."さんのカレンダー"; 
+      \Session::set('other_email', $other_email);
+     
+      ?>
 
 
 
@@ -101,6 +107,9 @@
 <form method="POST" action="/demo/hello/public/original/view2/">  
     <button type="submit">自分のカレンダーに戻る</button>
 </form>
+<form method="POST" action="/demo/hello/public/original/chat/">  
+    <button type="submit">コメント</button>
+</form>
 
 
 
@@ -111,11 +120,8 @@
         <button id="nextMonth">次の月</button>
     </div>
     <div id="calendar"></div>
-    <div id="buttonContainer"></div>
-    <div id="commentContainer"></div>
-
-
-
+ 
+   
 
 
     <script>
@@ -308,6 +314,13 @@ function createCalendar(month, year) {
 
     table.appendChild(tbody);
     calendar.appendChild(table);
+
+
+
+
+
+calendar.appendChild(commentSection);
+
 }
 
 
@@ -334,38 +347,10 @@ function createCalendar(month, year) {
             }
             createCalendar(currentMonth, currentYear);
         }
+       
 
-        function createButton() {
-    // ボタンを作成
-    const button = document.createElement("button");
-    button.innerHTML = "コメントする";
-    button.id = "customButton";
-    
-    // ボタンがクリックされた時のイベントを追加
-    button.addEventListener('click', function() {
-        Swal.fire({
-            title: 'コメントする',
-            text: "コメントの内容を入力してください:",
-            input: 'text',
-            inputPlaceholder: "コメントの内容",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "OK"
-        }).then((result) => {
-            if (result.isConfirmed && result.value) {
-                // コメントを表示するための領域に入力されたコメントを追加
-                const commentContainer = document.getElementById('commentContainer');
-                const newComment = document.createElement('p');
-                newComment.innerText = result.value;
-                commentContainer.appendChild(newComment);
-            }
-        });
-    });
+   
 
-    // カレンダーの下のbuttonContainerにボタンを追加
-    const buttonContainer = document.getElementById('buttonContainer');
-    buttonContainer.appendChild(button);
-}
 
 
 
@@ -383,7 +368,7 @@ function createCalendar(month, year) {
                 nextMonthButton.addEventListener('click', goToNextMonth);
                 const lastMonthButton = document.getElementById('lastMonth');
                 lastMonthButton.addEventListener('click', goToLastMonth);
-                createButton(); 
+           
                 });
 
 
