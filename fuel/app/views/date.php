@@ -44,6 +44,7 @@
     td {
         width: 14.28%;
         text-align: center;
+
         padding: 20px 0;
         border: 1px solid #ddd;
     }
@@ -191,156 +192,146 @@ if ($email != null) {
                     id: id,
                     date: date,
                     task: task,
-                    <<
-                    << << < HEAD
 
                 });
-                // console.log(task);
+
             };
 
-            ===
-            === = >>>
-            >>> > develop
+            // 指定された日付に対応するタスクを取得するための関数です。日付を指定して該当するタスクをフィルタリングして返します。
+            self.getTasksForDate = function(date) {
+                return ko.utils.arrayFilter(self.tasks(), function(task) {
+                    return task.date === date;
 
-        });
+                });
+            };
+            // サーバーからデータを取得
+            self.loadTasksFromServer = function() {
+                $.ajax({
+                    type: "GET",
+                    url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/tasks'); ?>',
+                    dataType: "json"
+                }).done(function(response) {
 
-        };
+                    if (response.success) {
+                        const tasksFromServer = response.tasks;
+                        tasksFromServer.forEach(function(task) {
 
-        // 指定された日付に対応するタスクを取得するための関数です。日付を指定して該当するタスクをフィルタリングして返します。
-        self.getTasksForDate = function(date) {
-            return ko.utils.arrayFilter(self.tasks(), function(task) {
-                return task.date === date;
-
-            });
-        };
-        // サーバーからデータを取得
-        self.loadTasksFromServer = function() {
-            $.ajax({
-                type: "GET",
-                url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/tasks'); ?>',
-                dataType: "json"
-            }).done(function(response) {
-
-                if (response.success) {
-                    const tasksFromServer = response.tasks;
-                    tasksFromServer.forEach(function(task) {
-
-                        let dateR = task.date;
-                        let formattedDate = dateR.replace(/\b0+/g, '');
-                        self.addTask(task.id, formattedDate, task.task);
+                            let dateR = task.date;
+                            let formattedDate = dateR.replace(/\b0+/g, '');
+                            self.addTask(task.id, formattedDate, task.task);
 
 
 
-                    });
-                    createCalendar(currentMonth, currentYear);
+                        });
+                        createCalendar(currentMonth, currentYear);
 
 
-                }
-            }).fail(function() {
-                Swal.fire("エラー", "タスクの読み込みに失敗しました", "error");
-            });
-        };
+                    }
+                }).fail(function() {
+                    Swal.fire("エラー", "タスクの読み込みに失敗しました", "error");
+                });
+            };
 
-        //price
-        self.items = ko.observableArray([]);
+            //price
+            self.items = ko.observableArray([]);
 
-        self.addProce = function(id, date, price) {
-            self.items.push({
-                id: id,
-                date: date,
-                price: price
-            });
-            // console.log("Added item:", id, date, price);
-        };
-
-
-        self.getPricesForDate = function(date) {
-            return ko.utils.arrayFilter(self.items(), function(item) {
-                return item.date === date;
-            });
-        };
-
-        self.loadPriceFromServer = function() {
-            $.ajax({
-                type: "GET",
-                url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/payment'); ?>',
-                dataType: "json"
-            }).done(function(response) {
-                if (response.success) {
-                    const priceFromServer = response.result;
-                    priceFromServer.forEach(function(item) {
-                        let date3 = item.date;
-                        let formattedDate3 = date3.replace(/\b0+/g, '');
-                        self.addProce(item.id, formattedDate3, item.price);
+            self.addProce = function(id, date, price) {
+                self.items.push({
+                    id: id,
+                    date: date,
+                    price: price
+                });
+                // console.log("Added item:", id, date, price);
+            };
 
 
-                    });
-                    createCalendar(currentMonth, currentYear);
-                }
-            }).fail(function() {
-                Swal.fire("エラー", "価格情報の読み込みに失敗しました", "error");
-            });
-        };
-        self.calculateTotalPriceForDate = function(date) {
-            const pricesForDate = self.getPricesForDate(date);
-            let totalPrice = 0;
-            pricesForDate.forEach(price => {
-                totalPrice += price.price;
-            });
-            console.log(totalPrice);
-            return totalPrice;
-        };
+            self.getPricesForDate = function(date) {
+                return ko.utils.arrayFilter(self.items(), function(item) {
+                    return item.date === date;
+                });
+            };
+
+            self.loadPriceFromServer = function() {
+                $.ajax({
+                    type: "GET",
+                    url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/payment'); ?>',
+                    dataType: "json"
+                }).done(function(response) {
+                    if (response.success) {
+                        const priceFromServer = response.result;
+                        priceFromServer.forEach(function(item) {
+                            let date3 = item.date;
+                            let formattedDate3 = date3.replace(/\b0+/g, '');
+                            self.addProce(item.id, formattedDate3, item.price);
 
 
-        //収入
-        self.incomes = ko.observableArray([]);
-        self.addIncome = function(id, date, price) {
-            self.incomes.push({
-                id: id,
-                date: date,
-                price: price // ← price2からpriceに変更
-            });
-            console.log("Added income:", id, date, price);
-        };
-        self.getIncomesForDate = function(date) {
-            return ko.utils.arrayFilter(self.incomes(), function(income) {
-                return income.date === date;
-            });
-        };
-        self.loadIncomesFromServer = function() {
-            $.ajax({
-                type: "GET",
-                url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/incomes'); ?>',
-                dataType: "json"
-            }).done(function(response) {
-                if (response.success) {
-                    console.log(response);
+                        });
+                        createCalendar(currentMonth, currentYear);
+                    }
+                }).fail(function() {
+                    Swal.fire("エラー", "価格情報の読み込みに失敗しました", "error");
+                });
+            };
+            self.calculateTotalPriceForDate = function(date) {
+                const pricesForDate = self.getPricesForDate(date);
+                let totalPrice = 0;
+                pricesForDate.forEach(price => {
+                    totalPrice += price.price;
+                });
+                console.log(totalPrice);
+                return totalPrice;
+            };
 
-                    const incomesFromServer = response.result; // ← incomesからresultに変更
 
-                    incomesFromServer.forEach(function(income) {
-                        let dateR = income.date2;
-                        let formattedDate = dateR.replace(/\b0+/g, '');
-                        self.addIncome(income.id, formattedDate, income.price2);
-                        // console.log(income.price2);
-                    });
+            //収入
+            self.incomes = ko.observableArray([]);
+            self.addIncome = function(id, date, price) {
+                self.incomes.push({
+                    id: id,
+                    date: date,
+                    price: price // ← price2からpriceに変更
+                });
+                console.log("Added income:", id, date, price);
+            };
+            self.getIncomesForDate = function(date) {
+                return ko.utils.arrayFilter(self.incomes(), function(income) {
+                    return income.date === date;
+                });
+            };
+            self.loadIncomesFromServer = function() {
+                $.ajax({
+                    type: "GET",
+                    url: '<?php echo '/' . \Uri::segment_replace('demo/hello/public/1/incomes'); ?>',
+                    dataType: "json"
+                }).done(function(response) {
+                    if (response.success) {
+                        console.log(response);
 
-                    createCalendar(currentMonth, currentYear);
-                }
-            }).fail(function() {
-                Swal.fire("エラー", "収入情報の読み込みに失敗しました", "error");
-            });
-        };
-        self.calculateTotalIncomeForDate = function(date) {
-            const incomesForDate = self.getIncomesForDate(date);
-            let totalIncome = 0;
-            incomesForDate.forEach(income => {
-                totalIncome += parseFloat(income.price);
+                        const incomesFromServer = response.result; // ← incomesからresultに変更
 
-            });
-            // console.log(totalIncome);
-            return totalIncome;
-        };
+                        incomesFromServer.forEach(function(income) {
+                            let dateR = income.date2;
+                            let formattedDate = dateR.replace(/\b0+/g, '');
+                            self.addIncome(income.id, formattedDate, income.price2);
+                            // console.log(income.price2);
+                        });
+
+                        createCalendar(currentMonth, currentYear);
+                    }
+                }).fail(function() {
+                    Swal.fire("エラー", "収入情報の読み込みに失敗しました", "error");
+                });
+            };
+            self.calculateTotalIncomeForDate = function(date) {
+                const incomesForDate = self.getIncomesForDate(date);
+                let totalIncome = 0;
+                incomesForDate.forEach(income => {
+                    totalIncome += parseFloat(income.price);
+
+                });
+                // console.log(totalIncome);
+                return totalIncome;
+            };
 
 
 
@@ -386,28 +377,12 @@ if ($email != null) {
                         // タスクの追加
                         const tasksForDate = viewModel.getTasksForDate(`${year}-${month + 1}-${dayCount}`);
                         tasksForDate.forEach(task => {
-                            <<
-                            << << < HEAD
                             const taskElement = document.createElement('div');
                             taskElement.textContent = task.task;
-
-                            console.log(task);
-
                             taskElement.classList.add('task');
                             taskElement.setAttribute('data-task-id', task.id);
                             taskElement.addEventListener('click', onTaskClick);
                             cell.appendChild(taskElement);
-
-
-                            ===
-                            === =
-                            const taskElement = document.createElement('div');
-                            taskElement.textContent = task.task;
-                            taskElement.classList.add('task');
-                            taskElement.setAttribute('data-task-id', task.id);
-                            taskElement.addEventListener('click', onTaskClick);
-                            cell.appendChild(taskElement); >>>
-                            >>> > develop
                         });
 
                         // 価格情報の表示
