@@ -2,7 +2,7 @@
 
 
 
-class Model_User extends \Model
+class Model_User extends Orm\Model
 { 
     
     protected static $_properties = array(

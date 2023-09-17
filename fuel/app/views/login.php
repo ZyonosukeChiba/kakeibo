@@ -39,7 +39,7 @@ const App = () => {
 
       </div>
       <form method="POST" action="/demo/hello/public/original/signup/">
-                <button className="sign" type="submit">サインアップする</button>
+                <button className="sign" type="submit" >サインアップする</button>
                 </form>
     </div>
    )
