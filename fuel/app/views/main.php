@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>  
-     <?php echo Asset::css('styles.css'); ?>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <?php echo Asset::css('styles.css'); ?>
     <title>家計簿アプリ</title>
-    
+
 </head>
+
 <body>
 
     <?php 
@@ -20,41 +22,41 @@
      }
     else{'ログインしていません';}}
      ?>
-    
-        <h1>家計簿アプリ</h1>
-        <div class="button">
+
+    <h1>家計簿アプリ</h1>
+    <div class="button">
         <div class="header-buttons">
 
-<form method="POST" action="/demo/hello/public/original/display_chart/">  
-    <button type="submit">グラフを見る</button>
-</form>
+            <form method="POST" action="/demo/hello/public/original/display_chart/">
+                <button type="submit">グラフを見る</button>
+            </form>
 
-<form method="POST" action="/demo/hello/public/original/view2/">  
-    <button type="submit">カレンダー</button>
-</form>
+            <form method="POST" action="/demo/hello/public/original/view2/">
+                <button type="submit">カレンダー</button>
+            </form>
 
-<form method="POST" action="/demo/hello/public/original/logout/">
-    <button type="submit">ログアウト</button>
-</form>
+            <form method="POST" action="/demo/hello/public/original/logout/">
+                <button type="submit">ログアウト</button>
+            </form>
 
 
 
-</div>
+        </div>
     </div>
-       
-         <div id="root"></div>
+
+    <div id="root"></div>
 
 
 
 
- 
-<p>月ごとの収支を見る</p>
-<form method="POST" action="/demo/hello/public/original/select_month/">
-    <input type="month" name="month" id="month">
-    <button type="submit" style="width:100px;">送信</button>
-</form>
 
-<?php 
+    <p>月ごとの収支を見る</p>
+    <form method="POST" action="/demo/hello/public/original/select_month/">
+        <input type="month" name="month" id="month">
+        <button type="submit" style="width:100px;">送信</button>
+    </form>
+
+    <?php 
 $month = Session::get('month');
 $out = Session::get('out');
 $in = Session::get('in');
@@ -145,9 +147,9 @@ echo '<p class="total">合計は' . $all . '円です</p>';
 
 ?>
 
-<script type="text/babel">
+    <script type="text/babel">
 
-const App = () => {
+        const App = () => {
    return (
     <div>
    
@@ -210,12 +212,25 @@ const root = ReactDOM.createRoot(container);
 root.render(<App />);
 
 </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const signoutButton = document.getElementById('signoutButton');
 
+        signoutButton.addEventListener('click', function(event) {
+            const isConfirmed = confirm('本当に退会しますか？'); // アラートで確認メッセージを表示
+            if (!isConfirmed) {
+                event.preventDefault(); // ユーザーがキャンセルを選択した場合、フォームの送信を停止
+            }
+        });
+    });
+    </script>
 
-<form method="POST" action="/demo/hello/public/original/signout/">
-    <input type="hidden" name="email" value="<?php $email = Session::get('email');
-    echo htmlspecialchars($email); ?>">
-    <button type="submit" style="max-width:200px;">退会する</button>
-</form>
+    <form method="POST" action="/demo/hello/public/original/signout/">
+        <input type="hidden" name="email" value="<?php $email = Session::get('email');
+echo htmlspecialchars($email);?>">
+        <button type="submit" id="signoutButton" style="width:200px; margin-top: 100px;">退会する</button>
+    </form>
+
 </body>
+
 </html>

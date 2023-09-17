@@ -48,7 +48,12 @@ class Controller_Original extends Controller
             $this->action_authCheck_For_Specific_Methods();
         } else if ($this->request->action === 'income_form_insert') {
             $this->action_authCheck_For_Specific_Methods();
-        }} catch (Exception $e) {
+        } else if ($this->request->action === 'view2') {
+            $this->action_authCheck_For_Specific_Methods();
+        } else if ($this->request->action === 'action_see_others') {
+            $this->action_authCheck_For_Specific_Methods();
+        }
+    } catch (Exception $e) {
         // エラーが発生した場合の処理
         $error_code = $e->getCode();
         // リダイレクトを行う
@@ -64,8 +69,7 @@ class Controller_Original extends Controller
     }
 
 //初期画面表示
- 
-   
+
     public function action_display_kakeibo_chart_data()
     {
         return View::forge('kakeibo_chart_data');
@@ -313,12 +317,10 @@ class Controller_Original extends Controller
             //     ->where('id', '=', $deleteId)
             //     ->execute();
 
-			    $delete = new Model();
-                $delete->delete($deleteId);
+            $delete = new Model();
+            $delete->delete($deleteId);
 
-
-            return View::forge('main');}
-			 else {
+            return View::forge('main');} else {
             return View::forge('main');}
     }
 
@@ -329,10 +331,10 @@ class Controller_Original extends Controller
             // DB::delete('income')
             //     ->where('id', '=', $deleteId2)
             //     ->execute();
-			$delete2 = new Model();
-			$delete2->delete2($deleteId2);
+            $delete2 = new Model();
+            $delete2->delete2($deleteId2);
             return View::forge('main');
-		} else {
+        } else {
             return View::forge('main');
         }
     }
@@ -367,81 +369,71 @@ class Controller_Original extends Controller
             return $view;
         }
     }
-    public function action_view2(){
-         
-        $view=View::forge('date');
- 
+    public function action_view2()
+    {
+
+        $view = View::forge('date');
+
         return $view;
     }
 
-
-    public function action_view3(){
+    public function action_view3()
+    {
         \Session::instance()->start();
-            $email = Session::get('email');
-            $group = \DB::select()
+        $email = Session::get('email');
+        $group = \DB::select()
             ->from('users')
-            ->where('email', '=',$email)
+            ->where('email', '=', $email)
             ->execute()
             ->get('group');
-   
-       
-   
-            $group_member=\DB::select('email')
+
+        $group_member = \DB::select('email')
             ->from('users')
-            ->where('group','=',$group)
+            ->where('group', '=', $group)
             ->execute()
             ->as_array();
-   
-            
-           
-           $view=View::forge('date2');
-          $view->set('group_member',$group_member);
-          return $view;
-      
+
+        $view = View::forge('date2');
+        $view->set('group_member', $group_member);
+        return $view;
+
     }
 
-
-
-    public function action_see_others() {
-        // Input::post('email')でemailというキーのPOSTデータを取得
+    public function action_see_others()
+    {
         $other_email = Input::post('email');
-        \log::error($other_email);
-        // $other_email='113zyooo@icloud.com';
-        // 取得した$other_emailをビューに渡す
-        \Session::instance()->start();
+        \Log::error($other_email); // 小文字の "L" を大文字の "L" に変更しました
+
+        // セッションに other_email をセット
         \Session::set('other_email', $other_email);
-        return View::forge('date_others');
-        
+
+        // View オブジェクトを作成
+        $view = View::forge('date_others');
+
+        // View に other_email をセット
+        $view->set('other_email', $other_email);
+
+        return $view;
     }
-    
 
-    // public function action_see_others(){
-    //     \Session::instance()->start();
-    //      $email = Session::get('email');
-    //      $group = \DB::select()
-    //      ->from('users')
-    //      ->where('email', '=',$email)
-    //      ->execute()
-    //      ->get('group');
+    public function action_chat()
+    {
 
-    
+        $view = View::forge('chat');
 
-    //      $group_member=\DB::select('email')
-    //      ->from('users')
-    //      ->where('group','=',$group)
-    //      ->execute()
-    //      ->as_array();
+        return $view;
+    }
 
-         
-        
-    //     $view=View::forge('select');
-    //    $view->set('group_member',$group_member);
-    //    return $view;
-    // }
+    public function action_test3()
+    {
+        $other_email = Input::post('email');
+        \Log::error($other_email); // 小文字の "L" を大文字の "L" に変更しました
+        // セッションに other_email をセット
+        \Session::set('other_email', $other_email);
+        $view = View::forge('test');
 
-
-
-    
+        return $view;
+    }
 
 /**
  * The 404 action for the application.
