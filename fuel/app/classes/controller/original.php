@@ -233,9 +233,23 @@ class Controller_Original extends Controller
             \Session::set('email', $email);
             $username = Input::post('email');
             $password = Input::post('password');
+            $group = Input::post('group');
             $created = Auth::create_user($username, $password, $email, 1);
 
             if ($created) {
+                $length = 10;
+                $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                $charactersLength = strlen($characters);
+                $randomString = '';
+
+                for ($i = 0; $i < $length; $i++) {
+                    $randomString .= $characters[rand(0, $charactersLength - 1)];
+                }
+                \DB::update('users')
+                    ->set(['group' => $randomString])
+                    ->where('email', '=', $email)
+                    ->execute();
+
                 Auth::login($email, $password);
                 return View::forge('main');
             } else {
