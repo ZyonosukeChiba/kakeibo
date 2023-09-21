@@ -39,7 +39,7 @@ You can not apply for membership. Start by sending in pull-requests, work on out
 
 
 
-* 使い方
+### 使い方
 テストアカウント:sample@gmail.com
 パスワード::sample@gmail.com
 
