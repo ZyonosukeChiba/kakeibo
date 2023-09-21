@@ -41,13 +41,13 @@ You can not apply for membership. Start by sending in pull-requests, work on out
 
 ### 使い方
 テストアカウント:sample@gmail.com
-パスワード::sample@gmail.com
+パスワード:sample@gmail.com
 
-家計簿画面
+* 家計簿画面
 家計簿画面から入出金を登録
 月ごとの収支を見るで月を選択すると収支が表示される
 
-カレンダー
+* カレンダー
 カレンダーの日付をクリックして予定を追加できる
 家計簿画面で追加した入出金がカレンダーに表示される
 グループを作るで同じグループ名を入力したユーザーの支出金と予定が追加されたカレンダーを見れる
