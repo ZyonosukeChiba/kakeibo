@@ -36,3 +36,19 @@ You can not apply for membership. Start by sending in pull-requests, work on out
 * Jelmer Schreuder - Developer ([http://jelmerschreuder.nl/](http://jelmerschreuder.nl/))
 * Phil Sturgeon - Developer ([http://philsturgeon.co.uk](http://philsturgeon.co.uk))
 * Dan Horrigan - Founder, Developer ([http://dhorrigan.com](http://dhorrigan.com))
+
+
+
+* 使い方
+テストアカウント:sample@gmail.com
+パスワード::sample@gmail.com
+
+家計簿画面
+家計簿画面から入出金を登録
+月ごとの収支を見るで月を選択すると収支が表示される
+
+カレンダー
+カレンダーの日付をクリックして予定を追加できる
+家計簿画面で追加した入出金がカレンダーに表示される
+グループを作るで同じグループ名を入力したユーザーの支出金と予定が追加されたカレンダーを見れる
+コメントから同じグループ内でチャットができる
