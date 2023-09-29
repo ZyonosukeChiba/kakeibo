@@ -12,7 +12,7 @@
 
 // Bootstrap the framework - THIS LINE NEEDS TO BE FIRST!
 require COREPATH.'bootstrap.php';
-
+require_once __DIR__.'/../vendor/autoload.php';
 // Add framework overload classes here
 \Autoloader::add_classes(array(
 	// Example: 'View' => APPPATH.'classes/myview.php',
