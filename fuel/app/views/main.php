@@ -37,7 +37,7 @@ if (Auth::check()) {
             <form method="POST" action="/demo/hello/public/original/logout/">
                 <button type="submit">ログアウト</button>
             </form>
-
+            
 
 
         </div>
@@ -222,7 +222,10 @@ root.render(<App />);
         });
     });
     </script>
-
+    <form method="POST" action="/demo/hello/public/original/show_inquiry/">
+                <button type="submit" style="width:200px; margin-top: 100px;">お問合せ</button>
+            </form>
+            
     <form method="POST" action="/demo/hello/public/original/signout/">
         <input type="hidden" name="email" value="<?php $email = Session::get('email');
 echo htmlspecialchars($email);?>">

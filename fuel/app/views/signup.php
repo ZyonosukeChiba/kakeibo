@@ -60,7 +60,3 @@
 
 </html>
 
-<!-- <div class="formField">
-                 <label for="username">ユーザー名:</label>
-                 <input type="text" name="username" id="username" required />
-             </div>  -->
