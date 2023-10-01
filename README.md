@@ -52,3 +52,6 @@ You can not apply for membership. Start by sending in pull-requests, work on out
 家計簿画面で追加した入出金がカレンダーに表示される
 グループを作るで同じグループ名を入力したユーザーの支出金と予定が追加されたカレンダーを見れる
 コメントから同じグループ内でチャットができる
+
+*要件定義
+https://docs.google.com/spreadsheets/d/1hc7TSCetK6zVV8FYdqUkgtEJX4BbXRn1QyRWswbE8FM/edit?usp=sharing
