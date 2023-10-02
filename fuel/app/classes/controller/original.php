@@ -370,9 +370,7 @@ class Controller_Original extends Controller
     {
         if (Input::post()) {
             $deleteId2 = $_POST['delete_id2'];
-            // DB::delete('income')
-            //     ->where('id', '=', $deleteId2)
-            //     ->execute();
+        
             $delete2 = new Model();
             $delete2->delete2($deleteId2);
             return View::forge('main');

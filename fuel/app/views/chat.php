@@ -193,8 +193,8 @@ $email = Session::get('email');
             
             $sum =   num1 / num2;
             return (a+':'+"1人"+$sum+"円です");
-  }
-}).then((result) => {
+         }
+        }).then((result) => {
         if (result.value) {
             Swal.fire({
                 title: `結果: ${result.value}`,
@@ -216,11 +216,9 @@ $email = Session::get('email');
                         const commentDiv = document.createElement('div');
                         const userDiv = document.createElement('span');
 
-                        commentDiv.textContent =result.value+ " 　　　";
-                        userDiv.textContent = "<?php echo ($email); ?>" + "(New comment)";
-
+                        commentDiv.innerHTML = "<?php echo ($email); ?>"+'(New comment)'+"<br>" +result.value ;
                         commentDiv.classList.add('comment');
-                        userDiv.classList.add('user');
+                      
 
                         commentDiv.appendChild(userDiv);
                         commentArea.appendChild(commentDiv);
@@ -237,52 +235,6 @@ $email = Session::get('email');
         }
     });
 }
-
-
-
-
-
-
-// .then((result) => {
-//   if (result.value) {
-//     Swal.fire(`結果: ${result.value}`);
-//   }
-// })
-// .then(function(result) {
-//             if (result.isConfirmed && result.value) {
-//                 // Ajaxを使用してコメントをサーバーに送信
-//                 $.ajax({
-//                     type: "POST",
-//                     url: '<?php echo "/" . \Uri::segment_replace("demo/hello/public/1/commentv"); ?>',
-//                     dataType: "json",
-//                     data: {
-//                         comment: result.value,
-
-//                     }
-//                 }).done(function(response) {
-//                     if (response.success) {
-//                         const commentDiv = document.createElement('div');
-//                         const userDiv = document.createElement('span');
-
-//                         commentDiv.textContent = result.value + " 　　　";
-//                         userDiv.textContent = "<?php echo ($email); ?>" + "(New comment)";
-
-//                         commentDiv.classList.add('comment');
-//                         userDiv.classList.add('user');
-
-//                         commentDiv.appendChild(userDiv);
-//                         commentArea.appendChild(commentDiv);
-
-//                         Swal.fire("成功", "コメントが追加されました", "success");
-//                     } else {
-//                         Swal.fire("エラー", "コメントの追加に失敗しました", "error");
-//                     }
-//                 }).fail(function() {
-//                     Swal.fire("エラー", "通信エラーが発生しました", "error");
-//                 });
-//             }
-//         });
-//     }
     </script>
 
 </body>
