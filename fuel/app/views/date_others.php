@@ -108,7 +108,7 @@ echo $other_email . "さんのカレンダー";
     <button type="submit">自分のカレンダーに戻る</button>
 </form>
 <form method="POST" action="/demo/hello/public/original/chat/">
-    <button type="submit">コメント</button>
+    <button type="submit">チャットルーム</button>
 </form>
 
 

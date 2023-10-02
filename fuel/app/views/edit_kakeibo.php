@@ -10,6 +10,7 @@
     
 </head>
 <body>
+<?php echo View::forge('header'); ?>
 <?php
 
 $result = DB::select('id', 'date', 'title', 'price')

@@ -78,3 +78,14 @@ body{
     
     button:hover {
       background-color: #0e528d;}
+
+      .ButtonA-parent {
+        display: flex;
+        justify-content: center;  
+        align-items: center;              
+    }
+    
+    .ButtonA {
+        align-items: center;
+    }
+    

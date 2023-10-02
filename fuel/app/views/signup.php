@@ -39,10 +39,11 @@
                             </div>
                         </form>
                     </div>
+                    <div class="ButtonA-parent">
                     <form method="POST" action="/demo/hello/public/original/login/">
-                        <button className="sign" type="submit">ログイン画面に戻る</button>
+                        <button className="sign" type="submit" class="buttonA">ログイン画面に戻る</button>
                     </form>
-
+                    </div>
 
                 </div>
             )

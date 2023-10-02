@@ -8,6 +8,8 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <?php echo Asset::css('styles.css'); ?>
+    
+    
     <title>家計簿アプリ</title>
 
 </head>
@@ -23,26 +25,8 @@ if (Auth::check()) {
 ?>
 
     <h1>家計簿アプリ</h1>
-    <div class="button">
-        <div class="header-buttons">
-
-            <form method="POST" action="/demo/hello/public/original/display_chart/">
-                <button type="submit">グラフを見る</button>
-            </form>
-
-            <form method="POST" action="/demo/hello/public/original/view2/">
-                <button type="submit">カレンダー</button>
-            </form>
-
-            <form method="POST" action="/demo/hello/public/original/logout/">
-                <button type="submit">ログアウト</button>
-            </form>
-            
-
-
-        </div>
-    </div>
-
+    
+   <?php echo View::forge('header'); ?>
     <div id="root"></div>
 
 

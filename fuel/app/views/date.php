@@ -127,25 +127,7 @@ if ($email != null) {
 
 
 
-    <div class="button">
-        <div class="header-buttons">
-
-            <form method="POST" action="/demo/hello/public/original/display_chart/">
-                <button type="submit">グラフを見る</button>
-            </form>
-
-            <form method="POST" action="/demo/hello/public/original/kakeibo_form_insert/">
-                <button type="submit">家計簿アプリ</button>
-            </form>
-
-            <form method="POST" action="/demo/hello/public/original/logout/">
-                <button type="submit">ログアウト</button>
-            </form>
-
-
-
-        </div>
-    </div>
+<?php echo View::forge('header'); ?>
 
     <div class="button">
         <div class="header-buttons2">
@@ -157,9 +139,7 @@ if ($email != null) {
                 <button type="submit">他の人のカレンダーを見る</button>
             </form>
 
-            <form method="POST" action="/demo/hello/public/original/chat/">
-                <button type="submit">コメント</button>
-            </form>
+           
         </div>
 
 

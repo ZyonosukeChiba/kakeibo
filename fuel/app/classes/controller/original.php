@@ -263,9 +263,6 @@ class Controller_Original extends Controller
                  curl_close($ch);
                
 
-
-
-
                 $length = 10;
                 $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
                 $charactersLength = strlen($characters);

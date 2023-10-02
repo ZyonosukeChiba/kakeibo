@@ -38,9 +38,11 @@ const App = () => {
         </form>
 
       </div>
+      <div class="ButtonA-parent">
       <form method="POST" action="/demo/hello/public/original/signup/">
-                <button className="sign" type="submit" >サインアップする</button>
-                </form>
+      <button className="sign" type="submit" class="buttonA">サインアップする</button>
+      </form>
+      </div>
     </div>
    )
 }

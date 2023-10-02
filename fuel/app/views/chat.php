@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <title>Comment System with FuelPHP and Ajax</title>
+    <title>チャット</title>
     <style>
     body {
         font-family: Arial, sans-serif;
@@ -51,23 +51,7 @@
 $email = Session::get('email');
 ?>
 
-    <div class="button">
-        <div class="header-buttons">
-
-
-
-            <form method="POST" action="/demo/hello/public/original/kakeibo_form_insert/">
-                <button type="submit">家計簿アプリ</button>
-            </form>
-            <form method="POST" action="/demo/hello/public/original/view2/">
-                <button type="submit">自分のカレンダーに戻る</button>
-            </form>
-            <form method="POST" action="/demo/hello/public/original/chat/">
-                <button type="submit">コメント</button>
-            </form>
-
-        </div>
-    </div>
+<?php echo View::forge('header'); ?>
 
 
 
@@ -80,20 +64,23 @@ $email = Session::get('email');
 
     <button id="myButton">コメントする</button>
 
+    <button id="myWari">割り勘する</button>
+    
+
     <script>
-    const commentArea = document.getElementById('commentArea'); // ← これも必要です
+    const commentArea = document.getElementById('commentArea'); 
     const button = document.getElementById('myButton');
+    const button2 = document.getElementById('myWari');
     $.ajax({
         type: "GET",
         url: '<?php echo "/" . \Uri::segment_replace("demo/hello/public/1/commentv2"); ?>',
         dataType: "json",
         success: function(response) {
             if (response.success) {
-                // console.log(response)
-                // // 各コメントをDOMに追加する
+            
                 response.tasks.forEach(function(task) {
 
-                    console.log(task.email)
+                    // console.log(task.email)
 
 
                     console.log(task);
@@ -111,20 +98,20 @@ $email = Session::get('email');
 
                 });
             } else {
-                console.error("コメントの取得に失敗しました:", response.error_message);
+                Swal.fire("コメントの取得に失敗しました:", response.error_message);
             }
         },
         error: function() {
-            console.error("コメントの取得中に通信エラーが発生しました");
+            Swal.fire("コメントの取得中に通信エラーが発生しました");
         }
     });
 
 
 
 
-    button.addEventListener('click', getTask);
+    button.addEventListener('click', addcom);
 
-    function getTask() {
+    function addcom() {
         Swal.fire({
             title: 'コメントを追加',
             text: "コメントの内容を入力してください:",
@@ -168,6 +155,123 @@ $email = Session::get('email');
             }
         });
     }
+    button2.addEventListener('click', addwari);
+
+    function addwari() {
+        Swal.fire({
+            title: '数値を入力',
+            html: `
+                <label>値段</label>
+                <input id="swal-input1" type="text" class="swal2-input" placeholder="値段を入力してください">
+                <br>
+                <label>人数を入力</label>
+                <input id="swal-input2" type="number" class="swal2-input" placeholder="人数を入力してください">
+            `,
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "計算",
+            preConfirm: () => {
+                const num1 = parseFloat(document.getElementById('swal-input1').value);
+                const num2 = parseFloat(document.getElementById('swal-input2').value);
+
+                if (!num2) { // 0での除算を防ぐ
+                Swal.showValidationMessage("0で除算することはできません");
+                return;
+                }
+
+            
+            $sum =   num1 / num2;
+            return ("1人"+$sum+"円です");
+  }
+}).then((result) => {
+        if (result.value) {
+            Swal.fire({
+                title: `結果: ${result.value}`,
+                confirmButtonText: "投稿",
+                showCancelButton: true,
+                cancelButtonText: "キャンセル"
+            }).then((postResult) => {
+                if (postResult.isConfirmed) {
+                    $.ajax({
+                    type: "POST",
+                    url: '<?php echo "/" . \Uri::segment_replace("demo/hello/public/1/commentv"); ?>',
+                    dataType: "json",
+                    data: {
+                        comment: result.value,
+
+                    }
+                }).done(function(response) {
+                    if (response.success) {
+                        const commentDiv = document.createElement('div');
+                        const userDiv = document.createElement('span');
+
+                        commentDiv.textContent =result.value+ " 　　　";
+                        userDiv.textContent = "<?php echo ($email); ?>" + "(New comment)";
+
+                        commentDiv.classList.add('comment');
+                        userDiv.classList.add('user');
+
+                        commentDiv.appendChild(userDiv);
+                        commentArea.appendChild(commentDiv);
+
+                        Swal.fire("成功", "コメントが追加されました", "success");
+                    } else {
+                        Swal.fire("エラー", "コメントの追加に失敗しました", "error");
+                    }
+                }).fail(function() {
+                    Swal.fire("エラー", "通信エラーが発生しました", "error");
+                });
+                }
+            });
+        }
+    });
+}
+
+
+
+
+
+
+// .then((result) => {
+//   if (result.value) {
+//     Swal.fire(`結果: ${result.value}`);
+//   }
+// })
+// .then(function(result) {
+//             if (result.isConfirmed && result.value) {
+//                 // Ajaxを使用してコメントをサーバーに送信
+//                 $.ajax({
+//                     type: "POST",
+//                     url: '<?php echo "/" . \Uri::segment_replace("demo/hello/public/1/commentv"); ?>',
+//                     dataType: "json",
+//                     data: {
+//                         comment: result.value,
+
+//                     }
+//                 }).done(function(response) {
+//                     if (response.success) {
+//                         const commentDiv = document.createElement('div');
+//                         const userDiv = document.createElement('span');
+
+//                         commentDiv.textContent = result.value + " 　　　";
+//                         userDiv.textContent = "<?php echo ($email); ?>" + "(New comment)";
+
+//                         commentDiv.classList.add('comment');
+//                         userDiv.classList.add('user');
+
+//                         commentDiv.appendChild(userDiv);
+//                         commentArea.appendChild(commentDiv);
+
+//                         Swal.fire("成功", "コメントが追加されました", "success");
+//                     } else {
+//                         Swal.fire("エラー", "コメントの追加に失敗しました", "error");
+//                     }
+//                 }).fail(function() {
+//                     Swal.fire("エラー", "通信エラーが発生しました", "error");
+//                 });
+//             }
+//         });
+//     }
     </script>
 
 </body>
