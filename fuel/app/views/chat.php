@@ -42,6 +42,12 @@
         cursor: pointer;
         width: 100%;
     }
+   .clname{
+
+    margin-bottom:20px;
+
+   }
+
     </style>
 </head>
 
@@ -83,11 +89,12 @@ $email = Session::get('email');
                     // console.log(task.email)
 
 
-                    console.log(task);
+                    
                     const commentDiv = document.createElement('div');
+                    commentDiv.className = "clname";
 
+                    commentDiv.innerHTML = task.email + "<br>" + task.comment;
 
-                    commentDiv.textContent = task.comment + "　　　　　　" + task.email;
 
 
                     commentDiv.classList.add('comment');
@@ -134,15 +141,15 @@ $email = Session::get('email');
                 }).done(function(response) {
                     if (response.success) {
                         const commentDiv = document.createElement('div');
-                        const userDiv = document.createElement('span');
+                    
 
-                        commentDiv.textContent = result.value + " 　　　";
-                        userDiv.textContent = "<?php echo ($email); ?>" + "(New comment)";
-
+                      
+                      
+                        commentDiv.innerHTML = "<?php echo ($email); ?>"+'(New comment)'+"<br>" +result.value ;
                         commentDiv.classList.add('comment');
-                        userDiv.classList.add('user');
+                       
 
-                        commentDiv.appendChild(userDiv);
+                       
                         commentArea.appendChild(commentDiv);
 
                         Swal.fire("成功", "コメントが追加されました", "success");
@@ -159,10 +166,13 @@ $email = Session::get('email');
 
     function addwari() {
         Swal.fire({
-            title: '数値を入力',
+            title: '割り勘',
             html: `
+                <label>もの</label>
+                <input id="swal-input3" type="text" class="swal2-input" placeholder="買ったものを入力してください">
+                <br>
                 <label>値段</label>
-                <input id="swal-input1" type="text" class="swal2-input" placeholder="値段を入力してください">
+                <input id="swal-input1" type="number" class="swal2-input" placeholder="値段を入力してください">
                 <br>
                 <label>人数を入力</label>
                 <input id="swal-input2" type="number" class="swal2-input" placeholder="人数を入力してください">
@@ -173,6 +183,7 @@ $email = Session::get('email');
             preConfirm: () => {
                 const num1 = parseFloat(document.getElementById('swal-input1').value);
                 const num2 = parseFloat(document.getElementById('swal-input2').value);
+                const a = document.getElementById('swal-input3').value;
 
                 if (!num2) { // 0での除算を防ぐ
                 Swal.showValidationMessage("0で除算することはできません");
@@ -181,7 +192,7 @@ $email = Session::get('email');
 
             
             $sum =   num1 / num2;
-            return ("1人"+$sum+"円です");
+            return (a+':'+"1人"+$sum+"円です");
   }
 }).then((result) => {
         if (result.value) {

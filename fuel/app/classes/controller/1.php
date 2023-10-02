@@ -21,59 +21,52 @@
  */
 
 
- use Fuel\Core\Input;
- use Tasks\Model_Tasks;
  
-    
-    
-    class Controller_1 extends Controller_Rest
+
+
+ use \Model\Tasks;
+
+
+class Controller_1 extends Controller_Rest
+{
+    public function post_add()
     {
-        public function post_add()
-        {
-            $response = ['success' => false];
-    
-            try {
-                // POSTデータの取得
-                $date = Input::post('date');
-                $task_content = Input::post('task');
-                $email = Session::get('email');
-                // データのバリデーション (簡易的に)
-                if (empty($date) || empty($task_content)) {
-                    throw new Exception("データが不足しています");
-                }
+      
+        $response = ['success' => false];
+        try {
+            // POSTデータの取得
+            $date = Input::post('date');
+            $task_content = Input::post('task');
+            $email = Session::get('email');
 
-                \DB::insert('tasks')->set(array(
-                    'date' => $date,
-                    'task' => $task_content,
-                    'email'=>$email
-
-                ))->execute();
-
-            
-
-                $response['success'] = true;
-    
-            } catch (Exception $e) {
-                // エラーメッセージの設定
-                $response['error_message'] = $e->getMessage();
+            // データのバリデーション (簡易的に)
+            if (empty($date) || empty($task_content)) {
+                throw new Exception("データが不足しています");
             }
-    
-            // JSONレスポンスを返す
-            return $this->response($response, ($response['success'] ? 200 : 500));
-            
+
+           
+            Tasks::task_add($date, $task_content, $email);
+
+            // 成功レスポンスの設定
+            $response['success'] = true;
+        } catch (Exception $e) {
+            // エラーメッセージの設定
+            $response['error_message'] = $e->getMessage();
         }
+
+        // JSONレスポンスを返す
+        return $this->response($response, ($response['success'] ? 200 : 500));
+    }
+
+
   
     public function get_tasks()
     {
+       
         $email = Session::get('email');
         try {
             // tasksテーブルから全てのデータを取得
-            $tasks = \DB::select()
-            ->from('tasks')
-            ->where('email', '=',$email)
-            ->execute()
-            ->as_array();
-            
+            $tasks=Tasks::task_get($email);
             // 成功したレスポンスを返す
             return $this->response(['success' => true, 'tasks' => $tasks], 200);
         } catch (\Exception $e) {

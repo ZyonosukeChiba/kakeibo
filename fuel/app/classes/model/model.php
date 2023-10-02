@@ -52,6 +52,15 @@ class Model extends \Model {
         ->where('id', '=', $deleteId2)
         ->execute();
     }
+    public static function task_add($date,$task_content,$email)
+    {
+        \DB::insert('tasks')->set(array(
+            'date' => $date,
+            'task' => $task_content,
+            'email'=>$email
+
+        ))->execute();
+    }
 
 
 
