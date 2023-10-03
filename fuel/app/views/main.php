@@ -32,13 +32,14 @@ if (Auth::check()) {
 
 
 
-
-    <p>月ごとの収支を見る</p>
+<div style="background-color:white;width:30%;margin:0 auto;">
+    
+    <h4>月ごとの収支を見る</h4>
     <form method="POST" action="/demo/hello/public/original/select_month/">
         <input type="month" name="month" id="month">
         <button type="submit" style="width:100px;">送信</button>
     </form>
-
+</div>
     <?php
 $month = Session::get('month');
 $out = Session::get('out');

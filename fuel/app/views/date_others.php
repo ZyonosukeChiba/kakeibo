@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <?php echo Asset::css('header.css'); ?>
 
 
     <title>カレンダー</title>
@@ -78,7 +78,14 @@
     cursor: pointer;
     width:100%;
 }
-
+.clc{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f7f7f7;
+        padding: 10px 0;
+        width:40%;
+    }
 
 
     </style>
@@ -96,29 +103,14 @@ echo $other_email . "さんのカレンダー";
 
 
 
-       <div class="button">
-        <div class="header-buttons">
+<?php echo View::forge('header'); ?>
 
 
+    <div id="calendarControls" class="clc">
+            <button id="lastMonth">前の月</button>
+            <button id="nextMonth">次の月</button>
+        </div>
 
-<form method="POST" action="/demo/hello/public/original/kakeibo_form_insert/">
-    <button type="submit">家計簿アプリ</button>
-</form>
-<form method="POST" action="/demo/hello/public/original/view2/">
-    <button type="submit">自分のカレンダーに戻る</button>
-</form>
-<form method="POST" action="/demo/hello/public/original/chat/">
-    <button type="submit">チャットルーム</button>
-</form>
-
-
-
-</div>
-    </div>
-    <div id="calendarControls">
-        <button id="lastMonth">前の月</button>
-        <button id="nextMonth">次の月</button>
-    </div>
     <div id="calendar"></div>
 
 

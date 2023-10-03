@@ -1,0 +1,65 @@
+.header-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+  }
+  
+  .header-buttons form {
+    margin: 0 10px;
+    width:100%;
+  }
+  
+  .header-buttons button {
+    padding: 10px 15px;
+    cursor: pointer;
+    /* background-color:; */
+   }
+   button{
+    background: #0563b4;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 30px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    width:100%;
+   }
+   button:hover {
+    background-color: #0e528d;
+}
+
+    @media (max-width: 576px) {
+        .header-buttons {
+            display: table;
+           
+            align-items: center;
+            padding: 10px 0;
+            width:100%;
+           
+          }
+          
+          .header-buttons form {
+            margin: 0 auto;
+            width:70%;
+            align-items: center;
+          }
+          
+          .header-buttons button {
+            padding: 10px 15px;
+            cursor: pointer;
+            /* background-color:; */
+           }
+           button{
+            background: #0563b4;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            padding: 10px 30px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        
+           }
+    }

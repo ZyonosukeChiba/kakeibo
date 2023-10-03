@@ -110,6 +110,14 @@
         cursor: pointer;
         width: 100%;
     }
+    .clc{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f7f7f7;
+        padding: 10px 0;
+        width:40%;
+    }
     </style>
 </head>
 
@@ -143,7 +151,7 @@ if ($email != null) {
         </div>
 
 
-        <div id="calendarControls">
+        <div id="calendarControls" class="clc">
             <button id="lastMonth">前の月</button>
             <button id="nextMonth">次の月</button>
         </div>

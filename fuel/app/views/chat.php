@@ -47,6 +47,14 @@
     margin-bottom:20px;
 
    }
+   .Buttons{
+    display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f7f7f7;
+        padding: 10px 0;
+   }
+  
 
     </style>
 </head>
@@ -58,9 +66,11 @@ $email = Session::get('email');
 ?>
 
 <?php echo View::forge('header'); ?>
+<div class="Buttons">
+<button id="myButton">コメントする</button>
 
-
-
+<button id="myWari">割り勘する</button>
+</div>
 
 
     <div id="commentContainer"></div>
@@ -68,10 +78,7 @@ $email = Session::get('email');
 
     <div id="commentArea"></div>
 
-    <button id="myButton">コメントする</button>
-
-    <button id="myWari">割り勘する</button>
-    
+   
 
     <script>
     const commentArea = document.getElementById('commentArea'); 

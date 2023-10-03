@@ -3,10 +3,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
  
-
+    <?php echo Asset::css('header.css'); ?>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
 </head>
 
 <body>
@@ -30,7 +31,7 @@
       
 
          <form method="POST" action="/demo/hello/public/original/view2/">
-             <button type="submit">カレンダー</button>
+             <button type="submit">Myカレンダー</button>
          </form>
 
 
